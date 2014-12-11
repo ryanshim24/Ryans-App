@@ -1,0 +1,26 @@
+<ion-view title="Browse">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content>
+    <h1>Dribble Viewer</h1>
+
+    <div class="list card" data-ng-repeat="image in imageList">
+      <div class="item item-avatar">
+
+        <img data-ng-src="{{image.player.avatar_url}}" alt="">
+        <h2>{{image.player.username}}</h2>
+        <p>{{image.player.location}}</p>
+      </div>
+
+      <div class="item item-image">
+        <img data-ng-src="{{image.image_url}}">
+      </div>
+
+      <a class="item item-icon-left bar bar-royal" data-ng-href="{{image.url}}" target="_blank">
+        <i class="icon ion-music-note energized"></i>
+        Visit Orignal Image
+      </a>
+    </div>
+  </ion-content>
+</ion-view>
