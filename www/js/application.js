@@ -15,19 +15,84 @@ app = angular.module("starter", ["ionic"]).run(function($ionicPlatform) {
     abstract: true,
     templateUrl: "templates/menu.html",
     controller: "AppCtrl"
-  }).state("app.search", {
-    url: "/search",
+  }).state("app.dribble", {
+    url: "/dribble",
     views: {
       menuContent: {
-        templateUrl: "templates/search.html"
+        templateUrl: "templates/dribble.html",
+        controller: "DribbleCtrl"
       }
     }
-  }).state("app.browse", {
-    url: "/browse",
+  }).state("app.concerts", {
+    url: "/concerts",
     views: {
       menuContent: {
-        templateUrl: "templates/browse.html",
-        controller: "BrowseCtrl"
+        templateUrl: "templates/concert.html",
+        controller: "ConcertCtrl"
+      }
+    }
+  }).state("app.games", {
+    url: "/games",
+    views: {
+      menuContent: {
+        templateUrl: "templates/games.html",
+        controller: "GamesCtrl"
+      }
+    }
+  }).state("app.hangman", {
+    url: "/games/hangman",
+    views: {
+      menuContent: {
+        templateUrl: "templates/hangman.html",
+        controller: "HangCtrl"
+      }
+    }
+  }).state("app.tictac", {
+    url: "/games/tictac",
+    views: {
+      menuContent: {
+        templateUrl: "templates/tictac.html",
+        controller: "TicCtrl"
+      }
+    }
+  }).state("app.todo", {
+    url: "/todo",
+    views: {
+      menuContent: {
+        templateUrl: "templates/todo.html",
+        controller: "ToDoCtrl"
+      }
+    }
+  }).state("app.foods", {
+    url: "/food",
+    views: {
+      menuContent: {
+        templateUrl: "templates/foods.html",
+        controller: "FoodsCtrl"
+      }
+    }
+  }).state("app.food", {
+    url: "/food/:foodlistId",
+    views: {
+      menuContent: {
+        templateUrl: "templates/food.html",
+        controller: "FoodCtrl"
+      }
+    }
+  }).state("app.places", {
+    url: "/places",
+    views: {
+      menuContent: {
+        templateUrl: "templates/places.html",
+        controller: "PlacesCtrl"
+      }
+    }
+  }).state("app.place", {
+    url: "/places/:placeId",
+    views: {
+      menuContent: {
+        templateUrl: "templates/place.html",
+        controller: "PlaceCtrl"
       }
     }
   }).state("app.playlists", {
@@ -50,26 +115,7 @@ app = angular.module("starter", ["ionic"]).run(function($ionicPlatform) {
   return $urlRouterProvider.otherwise("/app/playlists");
 });
 
-app.controller("AppCtrl", function($scope, $ionicModal, $timeout) {
-  $scope.loginData = {};
-  $ionicModal.fromTemplateUrl("templates/login.html", {
-    scope: $scope
-  }).then(function(modal) {
-    return $scope.modal = modal;
-  });
-  $scope.closeLogin = function() {
-    return $scope.modal.hide();
-  };
-  $scope.login = function() {
-    return $scope.modal.show();
-  };
-  return $scope.doLogin = function() {
-    console.log("Doing login", $scope.loginData);
-    return $timeout((function() {
-      return $scope.closeLogin();
-    }), 1000);
-  };
-});
+app.controller("AppCtrl", function($scope, $ionicModal, $timeout) {});
 
 app.controller("PlaylistsCtrl", function($scope) {
   $scope.test = 123;
@@ -98,20 +144,25 @@ app.controller("PlaylistsCtrl", function($scope) {
 
 app.controller("PlaylistCtrl", function($scope, $stateParams) {});
 
-app.controller("BrowseCtrl", function($scope, $state, $http, $q) {
+app.controller("DribbleCtrl", function($scope, $state, $http, $q) {
+  var count;
+  $scope.imageList = [];
+  count = 0;
   $scope.init = function() {
     return $scope.getImages().then((function(res) {
-      console.log("Images:", res);
-      $scope.imageList = res.shots;
-      return console.log($scope.imageList);
+      console.log("Images:", res.shots);
+      $scope.imageList = $scope.imageList.concat(res.shots);
+      console.log($scope.imageList);
+      return $scope.$broadcast('scroll.infiniteScrollComplete');
     }), function(status) {
       return $scope.pageError = status;
     });
   };
   $scope.getImages = function() {
     var defer;
+    count++;
     defer = $q.defer();
-    $http.jsonp("http://api.dribbble.com/shots/everyone?&per_page=20&callback=JSON_CALLBACK").success(function(res) {
+    $http.jsonp("http://api.dribbble.com/shots/everyone?&page=" + count + "&per_page=5&callback=JSON_CALLBACK").success(function(res) {
       return defer.resolve(res);
     }).error(function(status, err) {
       return defer.reject(status);
@@ -119,4 +170,207 @@ app.controller("BrowseCtrl", function($scope, $state, $http, $q) {
     return defer.promise;
   };
   return $scope.init();
+});
+
+app.filter("time", function() {
+  return function(input) {
+    var time;
+    time = input.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+    if (time.length > 1) {
+      time = time.slice(1);
+      time[5] = (time[0] < 12 ? " AM" : " PM");
+      time[0] = time[0] % 12 || 12;
+    }
+    time.splice(3, 1);
+    return time.join("");
+  };
+});
+
+app.controller("FoodsCtrl", function($scope, $state, $http, $q) {
+  $scope.init = function() {
+    return $scope.getEvents().then(function(res) {
+      $scope.places = res.response.groups[0].items;
+      return console.log($scope.places);
+    });
+  };
+  $scope.getEvents = function() {
+    var defer;
+    defer = $q.defer();
+    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&near=San%20Francisco,%20CA&section=food").success(function(res) {
+      return defer.resolve(res);
+    });
+    return defer.promise;
+  };
+  return $scope.init();
+});
+
+app.controller("FoodCtrl", function($scope, $stateParams, $http, $q) {
+  console.log("here i am");
+  $scope.init = function() {
+    return $scope.getEvents().then(function(res) {
+      $scope.place = res.response.venue;
+      $scope.prefix = $scope.place.photos.groups[0].items[1].prefix + "width";
+      $scope.width = $scope.place.photos.groups[0].items[1].width;
+      $scope.suffix = $scope.place.photos.groups[0].items[1].suffix;
+      $scope.pic = $scope.prefix + $scope.width + $scope.suffix;
+      console.log($scope.place);
+      $scope.title = $scope.place.name;
+      $scope.des = $scope.place.description;
+      $scope.add = $scope.place.location.address;
+      $scope.price = $scope.place.attributes.groups[0].items[0].displayValue;
+      return $scope.phone = $scope.place.contact.formattedPhone;
+    });
+  };
+  $scope.getEvents = function() {
+    var defer;
+    defer = $q.defer();
+    $http.jsonp("https://api.foursquare.com/v2/venues/" + $stateParams.foodlistId + "?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&callback=JSON_CALLBACK").success(function(res) {
+      return defer.resolve(res);
+    });
+    return defer.promise;
+  };
+  return $scope.init();
+});
+
+app.controller("GamesCtrl", function($scope) {});
+
+app.controller("HangCtrl", function($scope) {});
+
+app.controller("TicCtrl", function($scope) {});
+
+app.controller("ConcertsCtrl", function($scope) {
+  return $scope.concerts = [
+    {
+      title: "San Francisco",
+      id: 1
+    }, {
+      title: "Los Angeles",
+      id: 2
+    }, {
+      title: "San Diego",
+      id: 3
+    }, {
+      title: "Portland",
+      id: 4
+    }, {
+      title: "New York",
+      id: 5
+    }, {
+      title: "Las Vegas",
+      id: 6
+    }
+  ];
+});
+
+app.controller("ConcertCtrl", function($scope, $state, $http, $q, $stateParams) {
+  var num;
+  num = $stateParams.concertId;
+  $scope.init = function() {
+    return $scope.getEvents().then(function(res) {
+      console.log("This is the result: ", res);
+      return $scope.events = res.resultsPage.results.event;
+    });
+  };
+  $scope.getEvents = function() {
+    var defer, ipkey;
+    if (num = 1) {
+      ipkey = "ip:208.113.83.165";
+      defer = $q.defer();
+      $http.get("http://api.songkick.com/api/3.0/events.json?apikey=z4nSxDMJEbSNuTKt&location=" + ipkey + "&callback=JSON_CALLBACK").success(function(res) {
+        return defer.resolve(res);
+      });
+      return defer.promise;
+    } else if (num = 2) {
+      ipkey = "ip:134.201.250.155";
+      defer = $q.defer();
+      $http.get("http://api.songkick.com/api/3.0/events.json?apikey=z4nSxDMJEbSNuTKt&location=" + ipkey + "&callback=JSON_CALLBACK").success(function(res) {
+        return defer.resolve(res);
+      });
+      return defer.promise;
+    }
+  };
+  return $scope.init();
+});
+
+app.controller("PlacesCtrl", function($scope, $state, $http, $q) {
+  $scope.init = function() {
+    return $scope.getEvents().then(function(res) {
+      $scope.places = res.response.groups[0].items;
+      return console.log($scope.places);
+    });
+  };
+  $scope.getEvents = function() {
+    var defer;
+    defer = $q.defer();
+    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&near=San%20Francisco,%20CA&section=outdoors").success(function(res) {
+      return defer.resolve(res);
+    });
+    return defer.promise;
+  };
+  return $scope.init();
+});
+
+app.controller("PlaceCtrl", function($scope, $stateParams, $http, $q) {
+  console.log("here i am");
+  $scope.init = function() {
+    return $scope.getEvents().then(function(res) {
+      $scope.place = res.response.venue;
+      $scope.prefix = $scope.place.photos.groups[0].items[1].prefix + "width";
+      $scope.width = $scope.place.photos.groups[0].items[1].width;
+      $scope.suffix = $scope.place.photos.groups[0].items[1].suffix;
+      $scope.pic = $scope.prefix + $scope.width + $scope.suffix;
+      console.log($scope.place);
+      $scope.title = $scope.place.name;
+      $scope.des = $scope.place.description;
+      return $scope.add = $scope.place.location.address;
+    });
+  };
+  $scope.getEvents = function() {
+    var defer;
+    defer = $q.defer();
+    $http.jsonp("https://api.foursquare.com/v2/venues/" + $stateParams.placeId + "?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&callback=JSON_CALLBACK").success(function(res) {
+      return defer.resolve(res);
+    });
+    return defer.promise;
+  };
+  return $scope.init();
+});
+
+app.controller("ToDoCtrl", function($scope, $ionicModal) {
+  $scope.tasks = [
+    {
+      title: 'Collect coins'
+    }, {
+      title: 'Eat mushrooms'
+    }, {
+      title: 'Get high enough to grab the flag'
+    }, {
+      title: 'Find the Princess'
+    }
+  ];
+  $scope.deleteTask = function(task) {
+    var index;
+    index = $scope.tasks.indexOf(task);
+    return $scope.tasks.splice(index, 1);
+  };
+  $ionicModal.fromTemplateUrl("new-task.html", (function(modal) {
+    return $scope.taskModal = modal;
+  }), {
+    scope: $scope,
+    animation: "slide-in-up"
+  });
+  $scope.createTask = function(task) {
+    $scope.tasks.push({
+      title: task.title
+    });
+    console.log($scope.tasks);
+    $scope.taskModal.hide();
+    return task.title = "";
+  };
+  $scope.newTask = function() {
+    return $scope.taskModal.show();
+  };
+  return $scope.closeNewTask = function() {
+    return $scope.taskModal.hide();
+  };
 });

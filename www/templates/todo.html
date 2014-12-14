@@ -1,0 +1,50 @@
+<ion-view title="To-Do-List">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon" ng-click="newTask()">
+      <i class="icon ion-compose"></i>
+    </button>
+  </ion-nav-buttons>
+
+
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="task in tasks">
+        {{task.title}}
+        <ion-option-button class="button-assertive" ng-click="deleteTask(task)">Delete</ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
+
+<script id="new-task.html" type="text/ng-template">
+
+  <div class="modal">
+
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary">
+      <h1 class="title">New Task</h1>
+      <button class="button button-clear button-positive" ng-click="closeNewTask()">Cancel</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+
+      <form ng-submit="createTask(task)">
+        <div class="list">
+          <label class="item item-input">
+            <input type="text" placeholder="What do you need to do?" ng-model="task.title" autofocus>
+          </label>
+        </div>
+        <div class="padding">
+          <button type="submit" class="button button-block button-positive">Create Task</button>
+        </div>
+      </form>
+
+    </ion-content>
+
+  </div>
+
+</script>

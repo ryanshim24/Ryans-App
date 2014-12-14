@@ -1,0 +1,23 @@
+<ion-view title="Music">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header">
+    <div class="list" data-ng-repeat="event in events |limitTo: 7" style="margin-bottom: 0">
+
+      <div class="item item-divider">
+        Venue: {{event.venue.displayName}}
+        <br>
+        Date: {{event.start.date}} | {{event.start.time|time}}
+      </div>
+
+      <a class="item item-icon-right" href="{{artist.artist.uri}}" target="_blank" ng-repeat="artist in event.performance">
+        {{artist.displayName}}
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </a>
+
+    </div>
+
+  </ion-content>
+</ion-view>
