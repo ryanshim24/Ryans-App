@@ -1,5 +1,35 @@
 <ion-view title="Tic-Tac-Toe">
   <ion-content>
-    <h1>Tic-Tac-Toe</h1>
+    <div id="gameBoard">
+
+      <div class="turn">
+        <span ng-show="!board.isGameOver()">{{player[currentPlayer] || currentPlayer}}'s turn</span>
+      </div>
+
+      <div class="row" id="topRow">
+        <div class="cell" data-ng-click="cellClick(0,0)">{{board.getCell(0,0)}}</div>
+        <div class="cell" data-ng-click="cellClick(0,1)">{{board.getCell(0,1)}}</div>
+        <div class="cell" data-ng-click="cellClick(0,2)">{{board.getCell(0,2)}}</div>
+      </div>
+
+      <div class="row" id="middleRow">
+        <div class="cell" data-ng-click="cellClick(1,0)">{{board.getCell(1,0)}}</div>
+        <div class="cell" data-ng-click="cellClick(1,1)">{{board.getCell(1,1)}}</div>
+        <div class="cell" data-ng-click="cellClick(1,2)">{{board.getCell(1,2)}}</div>
+      </div>
+
+      <div class="row" id="bottomRow">
+        <div class="cell" data-ng-click="cellClick(2,0)">{{board.getCell(2,0)}}</div>
+        <div class="cell" data-ng-click="cellClick(2,1)">{{board.getCell(2,1)}}</div>
+        <div class="cell" data-ng-click="cellClick(2,2)">{{board.getCell(2,2)}}</div>
+      </div>
+
+      <div class="end" ng-show="board.isGameOver()">
+        Game over!
+        <button data-ng-click="newGame()" class="button button-energized" style="margin-top: 20px;">New game</button>
+      </div>
+
+    </div>
+
   </ion-content>
 </ion-view>

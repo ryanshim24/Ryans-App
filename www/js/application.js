@@ -186,6 +186,18 @@ app.filter("time", function() {
   };
 });
 
+app.filter("winnerArrow", function() {
+  return function(input) {
+    if (input === "X") {
+      return "← X";
+    } else if (input === "O") {
+      return "O →";
+    } else {
+      return input;
+    }
+  };
+});
+
 app.controller("FoodsCtrl", function($scope, $state, $http, $q) {
   $scope.init = function() {
     return $scope.getEvents().then(function(res) {
@@ -236,7 +248,52 @@ app.controller("GamesCtrl", function($scope) {});
 
 app.controller("HangCtrl", function($scope) {});
 
-app.controller("TicCtrl", function($scope) {});
+app.controller("TicCtrl", function($scope) {
+  $scope.board = new TicTacToeBoard();
+  $scope.currentPlayer = "X";
+  $scope.nextPlayer = "O";
+  $scope.player = $scope.player || {
+    X: "",
+    O: ""
+  };
+  $scope.cellClick = function(x, y) {
+    var temp, winner;
+    if ($scope.board.isGameOver()) {
+      return;
+    }
+    if ($scope.board.getCell(x, y) === "") {
+      $scope.board.setCell(x, y, $scope.currentPlayer);
+      temp = $scope.currentPlayer;
+      $scope.currentPlayer = $scope.nextPlayer;
+      $scope.nextPlayer = temp;
+    }
+    if ($scope.board.isGameOver()) {
+      if ($scope.board.isTie()) {
+        alert("Tie game!");
+        return GameHistory.push({
+          player: {
+            X: $scope.player.X,
+            O: $scope.player.O
+          },
+          winner: "Tie"
+        });
+      } else {
+        winner = $scope.board.getWinner();
+        alert(($scope.player[winner] || winner) + " won!");
+        return GameHistory.push({
+          player: {
+            X: $scope.player.X,
+            O: $scope.player.O
+          },
+          winner: winner
+        });
+      }
+    }
+  };
+  return $scope.newGame = function() {
+    return $scope.board.reset();
+  };
+});
 
 app.controller("ConcertsCtrl", function($scope) {
   return $scope.concerts = [

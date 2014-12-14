@@ -8,3 +8,12 @@ app.filter("time", ()->
     time.splice(3, 1)
     time.join ""
 )
+
+app.filter "winnerArrow", ->
+  (input) ->
+    if input is "X"
+      "← X"
+    else if input is "O"
+      "O →"
+    else
+      input

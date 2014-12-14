@@ -1,1 +1,52 @@
-/* Empty. Add your own CSS if you like */
+.turn{
+  font-size: 35px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.end {
+  font-size: 35px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+
+#gameBoard {
+  font-family: Arial, sans-serif;
+  width: 282px;
+  height: 282px;
+  margin: auto;
+}
+
+#gameBoard .cell {
+  vertical-align: bottom;
+  width: 90px;
+  height: 90px;
+  text-align: center;
+  font-size: 80px;
+  line-height: 90px;
+  border: 3px solid #000;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  margin-top: 30px;
+}
+
+#topRow .cell {
+  border-top: none;
+}
+
+#bottomRow .cell {
+  border-bottom: none;
+}
+
+#gameBoard .row .cell:first-child {
+  border-left: none;
+}
+
+#gameBoard .row .cell:last-child {
+  border-right: none;
+}
+
