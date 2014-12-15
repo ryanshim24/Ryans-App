@@ -62,22 +62,11 @@ app.controller "TicCtrl", ($scope) ->
     if $scope.board.isGameOver()
       if $scope.board.isTie()
         $scope.status= "Tie game!"
-        GameHistory.push
-          player:
-            X: $scope.player.X
-            O: $scope.player.O
 
-          winner: "Tie"
 
       else
         winner = $scope.board.getWinner()
         $scope.status = ($scope.player[winner] or winner) + " won!"
-        GameHistory.push
-          player:
-            X: $scope.player.X
-            O: $scope.player.O
-
-          winner: winner
 
 
   $scope.newGame = ->

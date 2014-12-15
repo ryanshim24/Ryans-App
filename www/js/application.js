@@ -63,8 +63,16 @@ app = angular.module("starter", ["ionic", "LocalForageModule"]).run(function($io
         controller: "ToDoCtrl"
       }
     }
+  }).state("app.foodplace", {
+    url: "/foodie",
+    views: {
+      menuContent: {
+        templateUrl: "templates/foodie.html",
+        controller: "FoodieCtrl"
+      }
+    }
   }).state("app.foods", {
-    url: "/food",
+    url: "/foodie/:foodPlace",
     views: {
       menuContent: {
         templateUrl: "templates/foods.html",
@@ -95,6 +103,14 @@ app = angular.module("starter", ["ionic", "LocalForageModule"]).run(function($io
         controller: "PlaceCtrl"
       }
     }
+  }).state("app.movies", {
+    url: "/movies",
+    views: {
+      menuContent: {
+        templateUrl: "templates/movies.html",
+        controller: "MoviesCtrl"
+      }
+    }
   }).state("app.playlists", {
     url: "/playlists",
     views: {
@@ -112,7 +128,7 @@ app = angular.module("starter", ["ionic", "LocalForageModule"]).run(function($io
       }
     }
   });
-  return $urlRouterProvider.otherwise("/app/playlists");
+  return $urlRouterProvider.otherwise("/app/todo");
 });
 
 app.controller("AppCtrl", function($scope, $ionicModal, $timeout) {});
@@ -176,6 +192,7 @@ app.filter("time", function() {
   return function(input) {
     var time;
     time = input.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+    console.log(time);
     if (time.length > 1) {
       time = time.slice(1);
       time[5] = (time[0] < 12 ? " AM" : " PM");
@@ -198,7 +215,44 @@ app.filter("winnerArrow", function() {
   };
 });
 
-app.controller("FoodsCtrl", function($scope, $state, $http, $q) {
+app.filter("movieTime", function() {
+  return function(input) {
+    var movieTime, time;
+    time = input.split("");
+    time = time.slice(11);
+    time = time.join("");
+    movieTime = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+    if (movieTime.length > 1) {
+      movieTime = movieTime.slice(1);
+      movieTime[5] = (movieTime[0] < 12 ? " AM" : " PM");
+      movieTime[0] = movieTime[0] % 12 || 12;
+    }
+    movieTime.splice(3, 1);
+    return movieTime.join("");
+  };
+});
+
+app.controller("FoodieCtrl", function($scope) {
+  $scope.test = 123;
+  return $scope.foodie = [
+    {
+      title: "Pizza"
+    }, {
+      title: "Sandwich"
+    }, {
+      title: "Ice Cream"
+    }, {
+      title: "Donut"
+    }, {
+      title: "Pasta"
+    }, {
+      title: "Ramen"
+    }
+  ];
+});
+
+app.controller("FoodsCtrl", function($scope, $stateParams, $http, $q) {
+  console.log($stateParams.foodPlace);
   $scope.init = function() {
     return $scope.getEvents().then(function(res) {
       $scope.places = res.response.groups[0].items;
@@ -208,7 +262,7 @@ app.controller("FoodsCtrl", function($scope, $state, $http, $q) {
   $scope.getEvents = function() {
     var defer;
     defer = $q.defer();
-    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&near=San%20Francisco,%20CA&section=food").success(function(res) {
+    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&near=San%20Francisco,%20CA&query=" + $stateParams.foodPlace).success(function(res) {
       return defer.resolve(res);
     });
     return defer.promise;
@@ -312,30 +366,42 @@ app.controller("TicCtrl", function($scope) {
     }
     if ($scope.board.isGameOver()) {
       if ($scope.board.isTie()) {
-        $scope.status = "Tie game!";
-        return GameHistory.push({
-          player: {
-            X: $scope.player.X,
-            O: $scope.player.O
-          },
-          winner: "Tie"
-        });
+        return $scope.status = "Tie game!";
       } else {
         winner = $scope.board.getWinner();
-        $scope.status = ($scope.player[winner] || winner) + " won!";
-        return GameHistory.push({
-          player: {
-            X: $scope.player.X,
-            O: $scope.player.O
-          },
-          winner: winner
-        });
+        return $scope.status = ($scope.player[winner] || winner) + " won!";
       }
     }
   };
   return $scope.newGame = function() {
     return $scope.board.reset();
   };
+});
+
+app.controller("MoviesCtrl", function($scope, $state, $http, $q) {
+  $scope.init = function() {
+    var date;
+    $scope.date = new Date();
+    $scope.curr = $scope.date.getDate();
+    $scope.month = $scope.date.getMonth() + 1;
+    console.log($scope.month);
+    $scope.year = $scope.date.getFullYear();
+    $scope.now = $scope.year + "-" + $scope.month + "-" + $scope.curr;
+    date = $scope.now;
+    return $scope.getEvents(date).then(function(res) {
+      $scope.movies = res;
+      return console.log($scope.movies);
+    });
+  };
+  $scope.getEvents = function(date) {
+    var defer;
+    defer = $q.defer();
+    $http.get("http://data.tmsapi.com/v1/movies/showings?startDate=" + date + "&zip=94104&api_key=uasvc72gnc45jbgugebp4r3s").success(function(res) {
+      return defer.resolve(res);
+    });
+    return defer.promise;
+  };
+  return $scope.init();
 });
 
 app.controller("ConcertsCtrl", function($scope) {

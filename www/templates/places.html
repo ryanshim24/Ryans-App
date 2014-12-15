@@ -7,14 +7,13 @@
     <div class="list" data-ng-repeat="place in places |limitTo: 50" style="margin-bottom: 0">
 
       <div class="item item-divider">
-        Category: {{place.venue.categories[0].name}}
+        Venue: {{place.venue.name}}
       </div>
 
       <a class="item item-icon-right" href="#/app/places/{{place.venue.id}}">
-        Venue: {{place.venue.name}}
-        <br>
-        Status: {{place.venue.hours.status}}
-        <br>
+        Category: {{place.venue.categories[0].name}}
+        <p style="overflow: initial;
+    white-space: initial;">Tip: {{place.tips[0].text}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </a>
 

@@ -1,4 +1,31 @@
-app.controller "FoodsCtrl", ($scope, $state, $http, $q) ->
+app.controller "FoodieCtrl", ($scope) ->
+  $scope.test = 123
+  $scope.foodie = [
+    {
+      title: "Pizza"
+    }
+    {
+      title: "Sandwich"
+
+    }
+    {
+      title: "Ice Cream"
+
+    }
+    {
+      title: "Donut"
+
+    }
+    {
+      title: "Pasta"
+    }
+    {
+      title: "Ramen"
+    }
+  ]
+
+app.controller "FoodsCtrl", ($scope, $stateParams, $http, $q) ->
+  console.log $stateParams.foodPlace
   $scope.init = ->
     $scope.getEvents().then (res) ->
       $scope.places = res.response.groups[0].items
@@ -7,7 +34,7 @@ app.controller "FoodsCtrl", ($scope, $state, $http, $q) ->
 
   $scope.getEvents = ->
     defer = $q.defer()
-    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&near=San%20Francisco,%20CA&section=food"
+    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&near=San%20Francisco,%20CA&query="+$stateParams.foodPlace
     ).success (res) ->
       defer.resolve res
 

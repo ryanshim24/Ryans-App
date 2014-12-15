@@ -1,4 +1,4 @@
-<ion-view title="Playlists">
+<ion-view title="To-Do List">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
@@ -8,8 +8,7 @@
 
 <ion-content>
   <div class="content padding" ng-show="items.length === 0">
-    You have everything done!
-    You need something to do. Why not add a task?
+    <h1>All is good in the world.</h1>
   </div>
   <ion-list can-swipe="true" show-delete="false">
     <ion-item ng-repeat="item in items">

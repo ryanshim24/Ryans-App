@@ -26,12 +26,7 @@ app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatfo
       menuContent:
         templateUrl: "templates/concert.html"
         controller: "ConcertCtrl"
-  # ).state("app.concert",
-  #   url: "/concerts/:concertId"
-  #   views:
-  #     menuContent:
-  #       templateUrl: "templates/concert.html"
-  #       controller: "ConcertCtrl"
+
 
 
   #GAMES CONTROLLER
@@ -55,6 +50,7 @@ app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatfo
         templateUrl: "templates/tictac.html"
         controller: "TicCtrl"
 
+
   #  TO DO LIST CONTROLLER
   ).state("app.todo",
     url:"/todo"
@@ -62,8 +58,17 @@ app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatfo
       menuContent:
         templateUrl: "templates/todo.html"
         controller: "ToDoCtrl"
+
+
+  # FOOD CONTROLLER
+  ).state("app.foodplace",
+    url: "/foodie"
+    views:
+      menuContent:
+        templateUrl: "templates/foodie.html"
+        controller: "FoodieCtrl"
   ).state("app.foods",
-    url:"/food"
+    url:"/foodie/:foodPlace"
     views:
       menuContent:
         templateUrl: "templates/foods.html"
@@ -74,6 +79,9 @@ app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatfo
       menuContent:
         templateUrl: "templates/food.html"
         controller: "FoodCtrl"
+
+
+
   ).state("app.places",
     url:"/places"
     views:
@@ -86,6 +94,14 @@ app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatfo
       menuContent:
         templateUrl: "templates/place.html"
         controller: "PlaceCtrl"
+
+  ).state("app.movies",
+    url: "/movies"
+    views:
+      menuContent:
+        templateUrl: "templates/movies.html"
+        controller: "MoviesCtrl"
+
 
   ).state("app.playlists",
     url: "/playlists"
@@ -102,7 +118,7 @@ app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatfo
 
 
   # if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise "/app/playlists"
+  $urlRouterProvider.otherwise "/app/todo"
 )
 
 # foursquarel ink
