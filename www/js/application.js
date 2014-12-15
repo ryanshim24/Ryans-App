@@ -246,7 +246,50 @@ app.controller("FoodCtrl", function($scope, $stateParams, $http, $q) {
 
 app.controller("GamesCtrl", function($scope) {});
 
-app.controller("HangCtrl", function($scope) {});
+app.controller("HangCtrl", function($scope) {
+  $scope.letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+  $scope.points = 0;
+  $scope.newGame = function(providedWord) {
+    $scope.intro = true;
+    $scope.game = true;
+    $scope.word = [];
+    providedWord.split("").forEach(function(letter) {
+      return $scope.word.push({
+        name: letter,
+        guessed: false
+      });
+    });
+    $scope.points = 0;
+    return $scope.gameLetters = $scope.letters.slice();
+  };
+  return $scope.check = function(guess) {
+    var correct;
+    $scope.gameLetters.splice($scope.gameLetters.indexOf(guess), 1);
+    correct = false;
+    $scope.word.forEach(function(letter) {
+      if (letter.name === guess) {
+        letter.guessed = true;
+        return correct = true;
+      }
+    });
+    if (!correct) {
+      $scope.points++;
+      if ($scope.points === 6) {
+        $scope.status = "Sorry, You Lose";
+        $scope.game = false;
+        $scope.victory = true;
+      }
+    }
+    return $scope.word.forEach(letter)(function() {
+      if (letter.gussed === true) {
+        $scope.status = "Congrats!, You won!";
+        $scope.game = false;
+        $scope.victory = true;
+      }
+      return $scope.guess = "";
+    });
+  };
+});
 
 app.controller("TicCtrl", function($scope) {
   $scope.board = new TicTacToeBoard();
@@ -269,7 +312,7 @@ app.controller("TicCtrl", function($scope) {
     }
     if ($scope.board.isGameOver()) {
       if ($scope.board.isTie()) {
-        alert("Tie game!");
+        $scope.status = "Tie game!";
         return GameHistory.push({
           player: {
             X: $scope.player.X,
@@ -279,7 +322,7 @@ app.controller("TicCtrl", function($scope) {
         });
       } else {
         winner = $scope.board.getWinner();
-        alert(($scope.player[winner] || winner) + " won!");
+        $scope.status = ($scope.player[winner] || winner) + " won!";
         return GameHistory.push({
           player: {
             X: $scope.player.X,

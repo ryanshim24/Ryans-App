@@ -17,3 +17,4 @@ app.filter "winnerArrow", ->
       "O →"
     else
       input
+

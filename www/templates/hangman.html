@@ -1,5 +1,72 @@
 <ion-view title="Hangman">
   <ion-content>
-    <h1>Hangman</h1>
+
+    <div class="intro" style="text-align: center" ng-hide="intro">
+      <h3>Put a word for the user to guess</h1>
+    </div>
+
+    <div class="list" ng-hide="intro">
+      <label class="item item-input">
+        <span class="input-label">Word</span>
+        <input type="text" ng-model="gameWord">
+      </label>
+      <button class="button button-block button-positive" ng-click="newGame(gameWord)">
+        Submit
+      </button>
+    </div>
+
+
+    <div class="game" ng-show="game">
+        <!-- Hangman -->
+        <svg width="500" height="550">
+
+          <!-- Hanger -->
+          <polyline points="350,500 50,500 150,500 150,100 320,100 320,150"
+                    style="fill:none;stroke:black;stroke-width:15" />
+
+          <!-- body -->
+          <line ng-show="points >= 2" x1="320" y1="190" x2="320" y2="360"/>
+          <!-- left arm -->
+          <line ng-show="points >= 3" x1="320" y1="260" x2="250" y2="230"/>
+          <!-- Right arm -->
+          <line ng-show="points >= 4" x1="320" y1="260" x2="390" y2="230"/>
+          <!-- left leg -->
+          <line ng-show="points >= 5" x1="320" y1="360" x2="250" y2="450"/>
+          <!-- Right leg -->
+          <line ng-show="points >= 6" x1="320" y1="360" x2="390" y2="450"/>
+          <!-- head -->
+          <circle ng-show="points >= 1" cx="320" cy="190" r="40" fill="white" />
+        </svg>
+
+
+        <!-- Word -->
+        <div class="word">
+          <div ng-repeat="letter in word" class="underlined-letter">
+            <div class="letter" ng-class="letter.guessed ? '': 'invisible'">{{letter.name}}</div>
+            <div class="underline"></div>
+          </div>
+        </div>
+
+        <menu>
+          <div>
+            <label>Incorrect Guesses:</label> {{ points }}
+          </div>
+          <br>
+          <div>
+            <label>Available letters:</label>
+            <div class="available-letters">
+              <div style = "display:inline-block; margin:2px;"
+                ng-repeat="letter in gameLetters || letters"
+                ng-click="check(letter)">
+                <button style = "width:30px; height: 30px; font-size:16px;">{{ letter }}</button>
+              </div>
+            </div>
+          </div>
+        </menu>
+
+      </div>
+      <div class="victory" ng-show="victory">
+        <h3>{{status}}</h3>
+      </div>
   </ion-content>
 </ion-view>

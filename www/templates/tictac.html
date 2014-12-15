@@ -4,6 +4,7 @@
 
       <div class="turn">
         <span ng-show="!board.isGameOver()">{{player[currentPlayer] || currentPlayer}}'s turn</span>
+        <span ng-show="board.isGameOver()">{{status}}</span>
       </div>
 
       <div class="row" id="topRow">

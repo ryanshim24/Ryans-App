@@ -1,3 +1,4 @@
+/*TIC TAC*/
 .turn{
   font-size: 35px;
   text-align: center;
@@ -50,3 +51,70 @@
   border-right: none;
 }
 
+
+
+
+/*hangman*/
+.container {
+  position: relative;
+}
+
+
+menu {
+  padding: 30px;
+  background: @gray-lighter;
+  border-radius: 5px;
+  font-size: 25px;
+  margin-top: 20px;
+  label {
+    color: @gray;
+    padding-right: 10px;
+    font-weight: bold;
+  }
+
+  .available-letters {
+    width: 100%;
+    div {
+      color: white;
+      cursor: pointer;
+      padding: 3px;
+      display: inline-block;
+      background: @gray-light;
+      margin: 3px;
+      width: 40px;
+      text-align: center;
+      border-radius: 3px;
+    }
+  }
+}
+
+line, circle {
+  stroke: black;
+  stroke-width: 4;
+}
+
+.word {
+  text-align: center;
+  font-size: 80px;
+  margin-top: 25px;
+}
+
+.underlined-letter {
+    height: 120px;
+    width: 50px;
+    display: inline-block;
+    position: relative;
+    margin: 0px 15px;
+}
+    .letter {
+      color: @gray;
+      height: 100px;
+      width: 50px;
+  }
+      .invisible {
+        visibility: hidden;
+      }
+
+.underline {
+  border-bottom: 5px solid black;
+}
