@@ -1,38 +1,58 @@
-app.controller "ToDoCtrl", ($scope, $ionicModal) ->
-  $scope.tasks = [{ title: 'Collect coins' },
-    { title: 'Eat mushrooms' },
-    { title: 'Get high enough to grab the flag' },
-    { title: 'Find the Princess' }]
-
-  $scope.deleteTask = (task) ->
-    index = $scope.tasks.indexOf(task);
-    $scope.tasks.splice(index, 1)
+app.controller "ToDoCtrl", ($scope, $ionicModal, $localForage) ->
+  $scope.items = []
+  $localForage.getItem("__TASKS__").then (tasks) ->
+    $scope.items = tasks  if tasks
 
 
-  # Create and load the Modal
-  $ionicModal.fromTemplateUrl "new-task.html", ((modal) ->
-    $scope.taskModal = modal
 
-  ),
+  # Initialize the dialog window
+  $ionicModal.fromTemplateUrl("task-prompt.html",
     scope: $scope
     animation: "slide-in-up"
+  ).then (modal) ->
+    $scope.modal = modal
 
 
-  # Called when the form is submitted
-  $scope.createTask = (task) ->
-    $scope.tasks.push title: task.title
-    console.log $scope.tasks
-    $scope.taskModal.hide()
-    task.title = ""
+  $scope.showTaskPrompt = ->
+    newTask =
+      title: ""
+      description: ""
+      isComplete: null
+
+    $scope.newTask = newTask
+    $scope.modal.show()
+
+
+  $scope.saveTask = ->
+    $scope.items.push $scope.newTask
+    $localForage.setItem("__TASKS__", $scope.items).then ->
+      $scope.modal.hide()
 
 
 
-  # Open our new task modal
-  $scope.newTask = ->
-    $scope.taskModal.show()
+
+  $scope.cancelTask = ->
+    $scope.modal.hide()
 
 
+  $scope.completeItem = (item) ->
+    $scope.removeItem item
 
-  # Close the new task modal
-  $scope.closeNewTask = ->
-    $scope.taskModal.hide()
+
+  $scope.ignoreItem = (item) ->
+    $scope.removeItem item
+
+
+  $scope.removeItem = (item) ->
+    i = -1
+    angular.forEach $scope.items, (task, key) ->
+      i = key  if item is task
+
+
+    if i >= 0
+      $scope.items.splice i, 1
+      $localForage.setItem "__TASKS__", $scope.items
+      true
+    false
+
+

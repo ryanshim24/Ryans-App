@@ -1,50 +1,49 @@
-<ion-view title="To-Do-List">
+<ion-view title="Playlists">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <button class="button button-icon" ng-click="newTask()">
-      <i class="icon ion-compose"></i>
-    </button>
+    <button ng-click="showTaskPrompt();" class="button button-icon icon ion-plus"></button>
   </ion-nav-buttons>
 
-
-  <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="task in tasks">
-        {{task.title}}
-        <ion-option-button class="button-assertive" ng-click="deleteTask(task)">Delete</ion-option-button>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</ion-view>
-
-<script id="new-task.html" type="text/ng-template">
-
-  <div class="modal">
-
-    <!-- Modal header bar -->
-    <ion-header-bar class="bar-secondary">
-      <h1 class="title">New Task</h1>
-      <button class="button button-clear button-positive" ng-click="closeNewTask()">Cancel</button>
-    </ion-header-bar>
-
-    <!-- Modal content area -->
-    <ion-content>
-
-      <form ng-submit="createTask(task)">
-        <div class="list">
-          <label class="item item-input">
-            <input type="text" placeholder="What do you need to do?" ng-model="task.title" autofocus>
-          </label>
-        </div>
-        <div class="padding">
-          <button type="submit" class="button button-block button-positive">Create Task</button>
-        </div>
-      </form>
-
-    </ion-content>
-
+<ion-content>
+  <div class="content padding" ng-show="items.length === 0">
+    You have everything done!
+    You need something to do. Why not add a task?
   </div>
+  <ion-list can-swipe="true" show-delete="false">
+    <ion-item ng-repeat="item in items">
+      <h2>{{item.title}}</h2>
+      <p style="white-space:normal;">{{item.description}}</p>
+      <ion-option-button class="button-balanced" ng-click="completeItem(item)">
+        Done
+      </ion-option-button>
 
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+
+
+<script id="task-prompt.html" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar-calm">
+      <h1 class="title">Add New Task</h1>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" placeholder="task title" ng-model="newTask.title">
+        </label>
+        <label class="item item-input">
+          <textarea placeholder="task description" ng-model="newTask.description"></textarea>
+        </label>
+      </div>
+
+      <div class="row">
+        <div class="col"><button ng-click="saveTask()" class="button button-full icon-left ion-checkmark-circled button-balanced">Save Task</button></div>
+        <div class="col"><button ng-click="cancelTask()" class="button button-full icon-left ion-close-circled button-assertive">Cancel</button></div>
+      </div>
+    </ion-content>
+  </ion-modal-view>
 </script>

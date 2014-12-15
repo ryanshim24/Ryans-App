@@ -1,6 +1,6 @@
 var app;
 
-app = angular.module("starter", ["ionic"]).run(function($ionicPlatform) {
+app = angular.module("starter", ["ionic", "LocalForageModule"]).run(function($ionicPlatform) {
   return $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -436,41 +436,57 @@ app.controller("PlaceCtrl", function($scope, $stateParams, $http, $q) {
   return $scope.init();
 });
 
-app.controller("ToDoCtrl", function($scope, $ionicModal) {
-  $scope.tasks = [
-    {
-      title: 'Collect coins'
-    }, {
-      title: 'Eat mushrooms'
-    }, {
-      title: 'Get high enough to grab the flag'
-    }, {
-      title: 'Find the Princess'
+app.controller("ToDoCtrl", function($scope, $ionicModal, $localForage) {
+  $scope.items = [];
+  $localForage.getItem("__TASKS__").then(function(tasks) {
+    if (tasks) {
+      return $scope.items = tasks;
     }
-  ];
-  $scope.deleteTask = function(task) {
-    var index;
-    index = $scope.tasks.indexOf(task);
-    return $scope.tasks.splice(index, 1);
-  };
-  $ionicModal.fromTemplateUrl("new-task.html", (function(modal) {
-    return $scope.taskModal = modal;
-  }), {
+  });
+  $ionicModal.fromTemplateUrl("task-prompt.html", {
     scope: $scope,
     animation: "slide-in-up"
+  }).then(function(modal) {
+    return $scope.modal = modal;
   });
-  $scope.createTask = function(task) {
-    $scope.tasks.push({
-      title: task.title
+  $scope.showTaskPrompt = function() {
+    var newTask;
+    newTask = {
+      title: "",
+      description: "",
+      isComplete: null
+    };
+    $scope.newTask = newTask;
+    return $scope.modal.show();
+  };
+  $scope.saveTask = function() {
+    $scope.items.push($scope.newTask);
+    return $localForage.setItem("__TASKS__", $scope.items).then(function() {
+      return $scope.modal.hide();
     });
-    console.log($scope.tasks);
-    $scope.taskModal.hide();
-    return task.title = "";
   };
-  $scope.newTask = function() {
-    return $scope.taskModal.show();
+  $scope.cancelTask = function() {
+    return $scope.modal.hide();
   };
-  return $scope.closeNewTask = function() {
-    return $scope.taskModal.hide();
+  $scope.completeItem = function(item) {
+    return $scope.removeItem(item);
+  };
+  $scope.ignoreItem = function(item) {
+    return $scope.removeItem(item);
+  };
+  return $scope.removeItem = function(item) {
+    var i;
+    i = -1;
+    angular.forEach($scope.items, function(task, key) {
+      if (item === task) {
+        return i = key;
+      }
+    });
+    if (i >= 0) {
+      $scope.items.splice(i, 1);
+      $localForage.setItem("__TASKS__", $scope.items);
+      true;
+    }
+    return false;
   };
 });
