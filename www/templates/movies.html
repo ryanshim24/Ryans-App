@@ -7,15 +7,15 @@
     <div class="list" data-ng-repeat="movie in movies |limitTo: 50" style="margin-bottom: 0">
 
       <div class="item item-divider">
-        <h2 style="overflow: intial">Title: {{movie.title}}</h2>
-        <h2 style="overflow: initial;">Theatre: {{movie.showtimes[0].theatre.name}}</h2>
-        <h2>Rated: {{movie.ratings[0].code}}</h2>
-        <p style="overflow: initial;
-    white-space: initial;">{{movie.shortDescription}}</p>
+        <h2 style="overflow: intial; font-weight: bold"> {{movie.title}}</h2>
+        <h2 style="overflow: initial;"> {{movie.showtimes[0].theatre.name}}</h2>
+        <h2> {{movie.ratings[0].code}}</h2>
+        <h3 style="overflow: initial;
+    white-space: initial; font-family: 'Lato', sans-serif;">{{movie.shortDescription}}</h3>
       </div>
 
       <a class="item item-icon-right" data-ng-repeat="show in movie.showtimes|limitTo: 8">
-        Showtime: {{show.dateTime |movieTime}}
+        <p>Showtime: {{show.dateTime |movieTime}}</p>
       </a>
 
     </div>

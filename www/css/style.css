@@ -1,21 +1,84 @@
+* {
+  font-family: 'Lato', sans-serif;
+}
+
+
+.item h2{
+ font-family: 'Lato', sans-serif;
+}
+.item h3{
+ font-family: 'Lato', sans-serif;
+
+}
+.title{
+ font-family: 'Lato', sans-serif;
+ font-weight: bold;
+}
+
+.item p{
+  font-family: 'Lato', sans-serif;
+}
+
+.item-divider {
+  font-family: 'Lato', sans-serif;
+  background-color: #fafafa;
+}
+
+.item .item-content.activated {
+    background-color: #fafafa
+}
+
+
+.foos {
+  font-size: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*TIC TAC*/
 .turn{
-  font-size: 35px;
+  font-size: 20px;
   text-align: center;
   margin-top: 30px;
 }
 
 .end {
-  font-size: 35px;
+  font-size: 20px;
   text-align: center;
   margin-top: 30px;
 }
 
 
 #gameBoard {
-  font-family: Arial, sans-serif;
+  font-family: 'Lato', sans-serif;
   width: 282px;
   height: 282px;
   margin: auto;
@@ -28,7 +91,7 @@
   text-align: center;
   font-size: 80px;
   line-height: 90px;
-  border: 3px solid #000;
+  border: 1px solid #000;
   margin: 0;
   padding: 0;
 }

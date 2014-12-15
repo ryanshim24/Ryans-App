@@ -3,7 +3,7 @@
     <div id="gameBoard">
 
       <div class="turn">
-        <span ng-show="!board.isGameOver()">{{player[currentPlayer] || currentPlayer}}'s turn</span>
+        <span ng-show="!board.isGameOver()">'{{player[currentPlayer] || currentPlayer}}' TURN</span>
         <span ng-show="board.isGameOver()">{{status}}</span>
       </div>
 
@@ -26,8 +26,9 @@
       </div>
 
       <div class="end" ng-show="board.isGameOver()">
-        Game over!
-        <button data-ng-click="newGame()" class="button button-energized" style="margin-top: 20px;">New game</button>
+        GAME OVER!
+        <br>
+        <button data-ng-click="newGame()" class="button button-calm" style="margin-top: 20px;">New game</button>
       </div>
 
     </div>

@@ -4,11 +4,11 @@
     <div class="list" data-ng-repeat="place in places |limitTo: 100" style="margin-bottom: 0">
 
       <div class="item item-divider">
-        Venue: {{place.venue.name}}
+       {{place.venue.name}}
       </div>
 
       <a class="item item-icon-right" href="#/app/food/{{place.venue.id}}">
-        Status: {{place.venue.hours.status}}
+       {{place.venue.hours.status}}
 
         <p style="overflow: initial;
     white-space: initial;">Tip: {{place.tips[0].text}}</p>
