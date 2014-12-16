@@ -27,4 +27,6 @@ app.controller "DribbleCtrl", ($scope, $state, $http, $q) ->
 
   $scope.init()
 
+  $scope.goToLink = (url) ->
+    $window.open(url, '_blank')
 

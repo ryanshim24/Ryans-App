@@ -185,7 +185,10 @@ app.controller("DribbleCtrl", function($scope, $state, $http, $q) {
     });
     return defer.promise;
   };
-  return $scope.init();
+  $scope.init();
+  return $scope.goToLink = function(url) {
+    return $window.open(url, '_blank');
+  };
 });
 
 app.filter("time", function() {

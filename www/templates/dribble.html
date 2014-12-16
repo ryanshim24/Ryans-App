@@ -16,7 +16,12 @@
         <img data-ng-src="{{image.image_url}}">
       </div>
 
-      <a class="item item-icon-left bar" data-ng-href="{{image.url}}" target="_blank">
+<!-- onclick="window.open('document.getElementById('dafuck').attributes.href' -->
+      <a class="item item-icon-left bar" onclick='window.open($(".foo").children().closest("li").text(),"_system","location=yes")'>
+      <ul class = "foo">
+        <li style="display:none">{{image.url}}</li>
+      </ul>
+
         <i class="icon ion-heart"></i>
         <p style="margin-top: -5px;">Visit Orignal Image</p>
       </a>
