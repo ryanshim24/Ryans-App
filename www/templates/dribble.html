@@ -17,11 +17,7 @@
       </div>
 
 <!-- onclick="window.open('document.getElementById('dafuck').attributes.href' -->
-      <a class="item item-icon-left bar" onclick='window.open($(".foo").children().closest("li").text(),"_system","location=yes")'>
-      <ul class = "foo">
-        <li style="display:none">{{image.url}}</li>
-      </ul>
-
+      <a class="item item-icon-left bar" ng-href="{{image.url}}">
         <i class="icon ion-heart"></i>
         <p style="margin-top: -5px;">Visit Orignal Image</p>
       </a>

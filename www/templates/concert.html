@@ -11,7 +11,7 @@
        <h2>{{now}} {{day}}, {{year}} | {{event.start.time|time}}</h2>
       </div>
 
-      <a class="item item-icon-right" href="{{artist.artist.uri}}" target="_blank" ng-repeat="artist in event.performance">
+      <a class="item item-icon-right" ng-href="{{artist.artist.uri}}" ng-repeat="artist in event.performance">
         <p>{{artist.displayName}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </a>
