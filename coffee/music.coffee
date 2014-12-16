@@ -30,7 +30,14 @@ app.controller "ConcertsCtrl", ($scope) ->
 
 app.controller "ConcertCtrl", ($scope, $state, $http, $q, $stateParams) ->
   num = $stateParams.concertId
+  month = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+  $scope.date = new Date()
+  $scope.month = $scope.date.getMonth()
+  $scope.day = $scope.date.getDate()
+  $scope.year = $scope.date.getFullYear()
 
+  $scope.now = month[$scope.month]
+  console.log $scope.now
   $scope.init = ->
     $scope.getEvents().then (res) ->
       console.log "This is the result: ", res

@@ -14,7 +14,7 @@
     white-space: initial; font-family: 'Lato', sans-serif;">{{movie.shortDescription}}</h3>
       </div>
 
-      <a class="item item-icon-right" data-ng-repeat="show in movie.showtimes|limitTo: 8">
+      <a class="item item-icon-right" data-ng-repeat="show in movie.showtimes|limitTo: 4">
         <p>Showtime: {{show.dateTime |movieTime}}</p>
       </a>
 

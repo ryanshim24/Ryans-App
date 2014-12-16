@@ -8,7 +8,7 @@
 
       <div class="item item-divider">
        <h2 style="font-weight: bold;">{{event.venue.displayName}}</h2>
-       <h2>{{event.start.date}} | {{event.start.time|time}}</h2>
+       <h2>{{now}} {{day}}, {{year}} | {{event.start.time|time}}</h2>
       </div>
 
       <a class="item item-icon-right" href="{{artist.artist.uri}}" target="_blank" ng-repeat="artist in event.performance">

@@ -1,6 +1,6 @@
 app.controller "ToDoCtrl", ($scope, $ionicModal, $localForage) ->
   $scope.items = []
-  $localForage.getItem("__TASKS__").then (tasks) ->
+  $localForage.getItem("TASKS").then (tasks) ->
     $scope.items = tasks  if tasks
 
 
@@ -25,7 +25,7 @@ app.controller "ToDoCtrl", ($scope, $ionicModal, $localForage) ->
 
   $scope.saveTask = ->
     $scope.items.push $scope.newTask
-    $localForage.setItem("__TASKS__", $scope.items).then ->
+    $localForage.setItem("TASKS", $scope.items).then ->
       $scope.modal.hide()
 
 
@@ -51,7 +51,7 @@ app.controller "ToDoCtrl", ($scope, $ionicModal, $localForage) ->
 
     if i >= 0
       $scope.items.splice i, 1
-      $localForage.setItem "__TASKS__", $scope.items
+      $localForage.setItem "TASKS", $scope.items
       true
     false
 

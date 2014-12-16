@@ -429,8 +429,15 @@ app.controller("ConcertsCtrl", function($scope) {
 });
 
 app.controller("ConcertCtrl", function($scope, $state, $http, $q, $stateParams) {
-  var num;
+  var month, num;
   num = $stateParams.concertId;
+  month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  $scope.date = new Date();
+  $scope.month = $scope.date.getMonth();
+  $scope.day = $scope.date.getDate();
+  $scope.year = $scope.date.getFullYear();
+  $scope.now = month[$scope.month];
+  console.log($scope.now);
   $scope.init = function() {
     return $scope.getEvents().then(function(res) {
       console.log("This is the result: ", res);
@@ -504,7 +511,7 @@ app.controller("PlaceCtrl", function($scope, $stateParams, $http, $q) {
 
 app.controller("ToDoCtrl", function($scope, $ionicModal, $localForage) {
   $scope.items = [];
-  $localForage.getItem("__TASKS__").then(function(tasks) {
+  $localForage.getItem("TASKS").then(function(tasks) {
     if (tasks) {
       return $scope.items = tasks;
     }
@@ -527,7 +534,7 @@ app.controller("ToDoCtrl", function($scope, $ionicModal, $localForage) {
   };
   $scope.saveTask = function() {
     $scope.items.push($scope.newTask);
-    return $localForage.setItem("__TASKS__", $scope.items).then(function() {
+    return $localForage.setItem("TASKS", $scope.items).then(function() {
       return $scope.modal.hide();
     });
   };
@@ -550,7 +557,7 @@ app.controller("ToDoCtrl", function($scope, $ionicModal, $localForage) {
     });
     if (i >= 0) {
       $scope.items.splice(i, 1);
-      $localForage.setItem("__TASKS__", $scope.items);
+      $localForage.setItem("TASKS", $scope.items);
       true;
     }
     return false;
