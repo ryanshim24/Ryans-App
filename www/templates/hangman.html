@@ -1,72 +1,115 @@
 <ion-view title="Hangman">
   <ion-content>
-
-    <div class="intro" style="text-align: center" ng-hide="intro">
-      <h3>Put a word for the user to guess</h1>
-    </div>
-
-    <div class="list" ng-hide="intro">
-      <label class="item item-input">
-        <span class="input-label">Word</span>
-        <input type="text" ng-model="gameWord">
-      </label>
-      <button class="button button-block button-positive" ng-click="newGame(gameWord)">
-        Submit
-      </button>
-    </div>
-
-
     <div class="game" ng-show="game">
         <!-- Hangman -->
-        <svg width="500" height="550">
+        <svg width="500" height="450">
+        <polyline points="10,440 260,440
+                          60,440, 60,30
+                          60,30, 160,30
+                          160,30 160,85
+                          " style="fill:none; stroke:#333333; stroke-width: 10"/>
 
-          <!-- Hanger -->
-          <polyline points="350,500 50,500 150,500 150,100 320,100 320,150"
-                    style="fill:none;stroke:black;stroke-width:15" />
+        <circle ng-show="hang[1]" cx="160" cy="130" r="40" style="fill:none; stroke:#333333; stroke-width:2"/>
+        <line ng-show="hang[2]" x1="160" y1="170" x2="160" y2="230" style="fill:none;stroke:#333333; stroke-width:2"/>
+        <!-- legs -->
+        <line ng-show="hang[5]" x1="160" y1="230" x2="120" y2="280" style="fill:none;stroke:#333333; stroke-width:2"/>
+        <line  ng-show="hang[6]" x1="160" y1="230" x2="200" y2="280" style="fill:none;stroke:#333333; stroke-width:2"/>
+        <!-- arms -->
+        <line ng-show="hang[3]" x1="160" y1="190" x2="130" y2="210" style="fill:none;stroke:#333333; stroke-width:2"/>
+        <line  ng-show="hang[4]" x1="160" y1="190" x2="190" y2="210" style="fill:none;stroke:#333333; stroke-width:2"/>
+      </svg>
 
-          <!-- body -->
-          <line ng-show="points >= 2" x1="320" y1="190" x2="320" y2="360"/>
-          <!-- left arm -->
-          <line ng-show="points >= 3" x1="320" y1="260" x2="250" y2="230"/>
-          <!-- Right arm -->
-          <line ng-show="points >= 4" x1="320" y1="260" x2="390" y2="230"/>
-          <!-- left leg -->
-          <line ng-show="points >= 5" x1="320" y1="360" x2="250" y2="450"/>
-          <!-- Right leg -->
-          <line ng-show="points >= 6" x1="320" y1="360" x2="390" y2="450"/>
-          <!-- head -->
-          <circle ng-show="points >= 1" cx="320" cy="190" r="40" fill="white" />
-        </svg>
+      <div ng-show="counter" class="msg"><h3>Remaining guesses: {{6 - count}}</h3></div>
 
+      <div class="whole">
+       <div class="guessed" ng-repeat="guess in guess track by $index">
+        <span class="words"><h3>{{guess}}</h3></span>
+      </div>
+      <br>
 
-        <!-- Word -->
-        <div class="word">
-          <div ng-repeat="letter in word" class="underlined-letter">
-            <div class="letter" ng-class="letter.guessed ? '': 'invisible'">{{letter.name}}</div>
-            <div class="underline"></div>
-          </div>
+        <div ng-repeat="space in spaces track by $index" class="spaced">
+          {{space}}
         </div>
-
-        <menu>
-          <div>
-            <label>Incorrect Guesses:</label> {{ points }}
-          </div>
-          <br>
-          <div>
-            <label>Available letters:</label>
-            <div class="available-letters">
-              <div style = "display:inline-block; margin:2px;"
-                ng-repeat="letter in gameLetters || letters"
-                ng-click="check(letter)">
-                <button style = "width:30px; height: 30px; font-size:16px;">{{ letter }}</button>
-              </div>
-            </div>
-          </div>
-        </menu>
-
       </div>
-      <div class="victory" ng-show="victory">
-        <h3>{{status}}</h3>
+
+      <div class="letters col">
+        <div ng-repeat="letter in alph" class="letter">
+          <button class="button button-small button-positive" ng-click="checking(letter)" ng-hide="clicked">{{letter}}</button>
+        </div>
       </div>
+
+
   </ion-content>
-</ion-view>
+
+<script id="hang-prompt.html" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar-calm">
+      <h1 class="title">Enter a word</h1>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" placeholder="Game Word" ng-model="theWord">
+        </label>
+      </div>
+      <div class="row">
+        <div class="col"><button ng-click="newGame(theWord)" class="button button-full icon-left ion-checkmark-circled button-balanced">Start Game</button></div>
+      </div>
+    </ion-content>
+  </ion-modal-view>
+</script>
+
+<script id="hang-prompt.html" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar-calm">
+      <h1 class="title">Enter a word</h1>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" placeholder="Game Word" ng-model="theWord">
+        </label>
+      </div>
+      <div class="row">
+        <div class="col"><button ng-click="newGame(theWord)" class="button button-full icon-left ion-checkmark-circled button-balanced">Start Game</button></div>
+      </div>
+    </ion-content>
+  </ion-modal-view>
+</script>
+
+<script id="win-prompt.html" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar-calm">
+      <h1 class="title">WINNER!</h1>
+    </ion-header-bar>
+    <ion-content>
+      <div class="row">
+        <div class="col text-center"><h2 class="winner balanced"> CONGRATS, YOU WON!</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col"><button ng-click="playAgain()" class="button button-full button-energized">Play Again?</button></div>
+      </div>
+
+    </ion-content>
+  </ion-modal-view>
+</script>
+
+<script id="lose-prompt.html" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar-calm">
+      <h1 class="title">LOSER!</h1>
+    </ion-header-bar>
+    <ion-content>
+      <div class="row">
+        <div class="col text-center"><h2 class="winner assertive"> LOL, YOU LOSE</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col"><button ng-click="playAgain()" class="button button-full button-energized">Play Again?</button></div>
+      </div>
+
+    </ion-content>
+  </ion-modal-view>
+</script>
+

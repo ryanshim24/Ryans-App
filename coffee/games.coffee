@@ -2,45 +2,101 @@ app.controller "GamesCtrl", ($scope) ->
 
 
 
-app.controller "HangCtrl", ($scope) ->
-  $scope.letters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-  $scope.points = 0
+app.controller "HangCtrl", ($scope, $ionicModal) ->
+  console.log $scope.theWord
 
-  $scope.newGame = (providedWord)->
-    $scope.intro = true
+  $ionicModal.fromTemplateUrl("hang-prompt.html",
+    scope: $scope
+    animation: "slide-in-up"
+  ).then (modal) ->
+    $scope.modal = modal
+    $scope.showTaskPrompt()
+
+  $ionicModal.fromTemplateUrl("win-prompt.html",
+    scope: $scope
+    animation: "slide-in-up"
+  ).then (modal) ->
+    $scope.fodal = modal
+
+  $ionicModal.fromTemplateUrl("lose-prompt.html",
+    scope: $scope
+    animation: "slide-in-up"
+  ).then (modal) ->
+    $scope.lodal = modal
+
+
+  $scope.showTaskPrompt = ->
+    $scope.modal.show()
+
+  $scope.newGame = (theWord, theHint) ->
+    $scope.alph = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+    $scope.modal.hide()
     $scope.game = true
-    $scope.word = []
-    providedWord.split("").forEach (letter) ->
-      $scope.word.push
-        name: letter
-        guessed: false
+    $scope.counter = true
+    $scope.count = 0
 
-    $scope.points = 0
-    $scope.gameLetters = $scope.letters.slice()
+    $scope.savedWord = theWord.toLowerCase()
+    $scope.letters = $scope.savedWord.split('')
 
-  $scope.check = (guess) ->
-    $scope.gameLetters.splice $scope.gameLetters.indexOf(guess), 1
-    correct = false
-    $scope.word.forEach (letter) ->
-      if letter.name is guess
-        letter.guessed = true
-        correct = true
+    $scope.guess = []
+    $scope.spaces = []
 
-    unless correct
-      $scope.points++
-      if $scope.points is 6
-        $scope.status = "Sorry, You Lose"
-        $scope.game = false
-        $scope.victory = true
+    $scope.hang = {}
 
-    $scope.word.forEach(letter) ->
-      if letter.gussed is true
+    a = 0
+    while a < $scope.letters.length
+      $scope.spaces.push("")
+      a += 1
 
-        $scope.status = "Congrats!, You won!"
-        $scope.game = false
-        $scope.victory = true
+  $scope.checking = (letter) ->
+    console.log letter
 
-      $scope.guess = ""
+    this.clicked = true # hide the letter that clicked
+
+    right = false # To check if the letter chosen is right
+
+    i = 0 # loop through the letters arary to see if the letter chosen is inside
+    while i < $scope.letters.length
+
+      if $scope.letters[i] is letter # if the letter is in the word
+        $scope.guess[i] = letter # push that letter into the array
+        right = true # right is set to true
+        console.log $scope.guess
+
+        checkSpace = false # checking for the empty spaces inside the array
+        j = 0
+        while j < $scope.guess.length
+          if $scope.guess[j] is undefined
+            checkSpace = true
+          j++
+
+
+        # Win conditions if the guess array is the same length as the letters array
+        # and no more
+       if $scope.guess.length is $scope.letters.length && checkSpace is false
+          console.log "here i am i win"
+          $scope.fodal.show()
+          $scope.alph = []
+
+
+
+      # If we loop through the letters and we couldn't find it based on what we clicked
+      else if i is $scope.letters.length-1 && right is false
+        $scope.count += 1
+        $scope.hang[$scope.count] = true
+        if $scope.count is 6
+          console.log "here i am"
+          $scope.lodal.show()
+          $scope.alph = []
+
+      i++
+
+  $scope.playAgain = ->
+    console.log "here I am"
+    $scope.fodal.hide()
+    $scope.lodal.hide()
+    $scope.modal.show()
+
 
 
 app.controller "TicCtrl", ($scope) ->

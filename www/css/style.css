@@ -35,36 +35,6 @@
   font-size: 12px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*TIC TAC*/
 .turn{
   font-size: 20px;
@@ -119,71 +89,58 @@
 }
 
 
-
-
 /*hangman*/
-.container {
-  position: relative;
-}
-
-
-menu {
-  padding: 30px;
-  background: @gray-lighter;
-  border-radius: 5px;
-  font-size: 25px;
+.letters {
+  font-family: 'Lato', sans-serif;
   margin-top: 20px;
-  label {
-    color: @gray;
-    padding-right: 10px;
-    font-weight: bold;
-  }
-
-  .available-letters {
-    width: 100%;
-    div {
-      color: white;
-      cursor: pointer;
-      padding: 3px;
-      display: inline-block;
-      background: @gray-light;
-      margin: 3px;
-      width: 40px;
-      text-align: center;
-      border-radius: 3px;
-    }
-  }
-}
-
-line, circle {
-  stroke: black;
-  stroke-width: 4;
-}
-
-.word {
   text-align: center;
-  font-size: 80px;
-  margin-top: 25px;
+}
+.letter {
+  display: inline-block;
+  width: 30px;
+  margin-right: 4px;
+  margin-bottom: 4px;
 }
 
-.underlined-letter {
-    height: 120px;
-    width: 50px;
-    display: inline-block;
-    position: relative;
-    margin: 0px 15px;
+.guessed {
+  width: 25px;
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: -10px;
+  margin-top: -10px;
 }
-    .letter {
-      color: @gray;
-      height: 100px;
-      width: 50px;
-  }
-      .invisible {
-        visibility: hidden;
-      }
 
-.underline {
-  border-bottom: 5px solid black;
+.words h3 {
+  font-family: 'Lato', sans-serif;
+  margin-left: 4px;
+  margin-top: 0;
+  margin-bottom: 0;
+
+}
+
+.whole {
+  margin-left: 50px;
+}
+.spaced {
+  width: 25px;
+  height: 2px;
+  display: inline-block;
+  border-bottom: 1px solid black;
+  margin-right: 5px;
+}
+
+.msg {
+  margin-top: 20px;
+  margin-left: 50px;
+}
+.msg h3 {
+  font-family: 'Lato', sans-serif;
+}
+
+.winner h2 {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+  color: blue;
 }
 
 

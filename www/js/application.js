@@ -307,48 +307,93 @@ app.controller("FoodCtrl", function($scope, $stateParams, $http, $q) {
 
 app.controller("GamesCtrl", function($scope) {});
 
-app.controller("HangCtrl", function($scope) {
-  $scope.letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-  $scope.points = 0;
-  $scope.newGame = function(providedWord) {
-    $scope.intro = true;
-    $scope.game = true;
-    $scope.word = [];
-    providedWord.split("").forEach(function(letter) {
-      return $scope.word.push({
-        name: letter,
-        guessed: false
-      });
-    });
-    $scope.points = 0;
-    return $scope.gameLetters = $scope.letters.slice();
+app.controller("HangCtrl", function($scope, $ionicModal) {
+  console.log($scope.theWord);
+  $ionicModal.fromTemplateUrl("hang-prompt.html", {
+    scope: $scope,
+    animation: "slide-in-up"
+  }).then(function(modal) {
+    $scope.modal = modal;
+    return $scope.showTaskPrompt();
+  });
+  $ionicModal.fromTemplateUrl("win-prompt.html", {
+    scope: $scope,
+    animation: "slide-in-up"
+  }).then(function(modal) {
+    return $scope.fodal = modal;
+  });
+  $ionicModal.fromTemplateUrl("lose-prompt.html", {
+    scope: $scope,
+    animation: "slide-in-up"
+  }).then(function(modal) {
+    return $scope.lodal = modal;
+  });
+  $scope.showTaskPrompt = function() {
+    return $scope.modal.show();
   };
-  return $scope.check = function(guess) {
-    var correct;
-    $scope.gameLetters.splice($scope.gameLetters.indexOf(guess), 1);
-    correct = false;
-    $scope.word.forEach(function(letter) {
-      if (letter.name === guess) {
-        letter.guessed = true;
-        return correct = true;
-      }
-    });
-    if (!correct) {
-      $scope.points++;
-      if ($scope.points === 6) {
-        $scope.status = "Sorry, You Lose";
-        $scope.game = false;
-        $scope.victory = true;
-      }
+  $scope.newGame = function(theWord, theHint) {
+    var a, _results;
+    $scope.alph = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    $scope.modal.hide();
+    $scope.game = true;
+    $scope.counter = true;
+    $scope.count = 0;
+    $scope.savedWord = theWord.toLowerCase();
+    $scope.letters = $scope.savedWord.split('');
+    $scope.guess = [];
+    $scope.spaces = [];
+    $scope.hang = {};
+    a = 0;
+    _results = [];
+    while (a < $scope.letters.length) {
+      $scope.spaces.push("");
+      _results.push(a += 1);
     }
-    return $scope.word.forEach(letter)(function() {
-      if (letter.gussed === true) {
-        $scope.status = "Congrats!, You won!";
-        $scope.game = false;
-        $scope.victory = true;
+    return _results;
+  };
+  $scope.checking = function(letter) {
+    var checkSpace, i, j, right, _results;
+    console.log(letter);
+    this.clicked = true;
+    right = false;
+    i = 0;
+    _results = [];
+    while (i < $scope.letters.length) {
+      if ($scope.letters[i] === letter) {
+        $scope.guess[i] = letter;
+        right = true;
+        console.log($scope.guess);
+        checkSpace = false;
+        j = 0;
+        while (j < $scope.guess.length) {
+          if ($scope.guess[j] === void 0) {
+            checkSpace = true;
+          }
+          j++;
+        }
       }
-      return $scope.guess = "";
-    });
+      if ($scope.guess.length === $scope.letters.length && checkSpace === false) {
+        console.log("here i am i win");
+        $scope.fodal.show();
+        $scope.alph = [];
+      } else if (i === $scope.letters.length - 1 && right === false) {
+        $scope.count += 1;
+        $scope.hang[$scope.count] = true;
+        if ($scope.count === 6) {
+          console.log("here i am");
+          $scope.lodal.show();
+          $scope.alph = [];
+        }
+      }
+      _results.push(i++);
+    }
+    return _results;
+  };
+  return $scope.playAgain = function() {
+    console.log("here I am");
+    $scope.fodal.hide();
+    $scope.lodal.hide();
+    return $scope.modal.show();
   };
 });
 
@@ -541,6 +586,7 @@ app.controller("ToDoCtrl", function($scope, $ionicModal, $localForage) {
   };
   $scope.saveTask = function() {
     $scope.items.push($scope.newTask);
+    console.log($scope.items);
     return $localForage.setItem("TASKS", $scope.items).then(function() {
       return $scope.modal.hide();
     });

@@ -32,3 +32,4 @@ app.filter "movieTime", ->
       movieTime[0] = movieTime[0] % 12 or 12
     movieTime.splice(3, 1)
     movieTime.join ""
+

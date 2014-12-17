@@ -25,6 +25,7 @@ app.controller "ToDoCtrl", ($scope, $ionicModal, $localForage) ->
 
   $scope.saveTask = ->
     $scope.items.push $scope.newTask
+    console.log $scope.items
     $localForage.setItem("TASKS", $scope.items).then ->
       $scope.modal.hide()
 
