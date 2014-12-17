@@ -15,7 +15,7 @@ app.controller "MoviesCtrl", ($scope, $state, $http, $q) ->
 
   $scope.getEvents = (date)->
     defer = $q.defer()
-    $http.get("http://data.tmsapi.com/v1/movies/showings?startDate="+date+"&zip=94104&api_key=uasvc72gnc45jbgugebp4r3s"
+    $http.get("http://data.tmsapi.com/v1/movies/showings?startDate="+date+"&zip=94104&api_key=pjp3whej4cfqk4gv4c3fxzun"
     ).success (res) ->
       defer.resolve res
 

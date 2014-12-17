@@ -10,10 +10,10 @@
   <div class="content padding" ng-show="items.length === 0">
     <h2>All is good in the world.</h2>
   </div>
-  <ion-list can-swipe="true" show-delete="false">
+  <ion-list can-swipe="true">
     <ion-item ng-repeat="item in items">
       <h2>{{item.title}}</h2>
-      <p style="white-space:normal;">{{item.description}}</p>
+      <p>{{item.description}}</p>
       <ion-option-button class="button-positive" ng-click="completeItem(item)">
         Done
       </ion-option-button>

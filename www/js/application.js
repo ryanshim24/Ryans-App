@@ -250,6 +250,10 @@ app.controller("FoodieCtrl", function($scope) {
       title: "Pasta"
     }, {
       title: "Ramen"
+    }, {
+      title: "Burrito"
+    }, {
+      title: "Salad"
     }
   ];
 });
@@ -399,7 +403,7 @@ app.controller("MoviesCtrl", function($scope, $state, $http, $q) {
   $scope.getEvents = function(date) {
     var defer;
     defer = $q.defer();
-    $http.get("http://data.tmsapi.com/v1/movies/showings?startDate=" + date + "&zip=94104&api_key=uasvc72gnc45jbgugebp4r3s").success(function(res) {
+    $http.get("http://data.tmsapi.com/v1/movies/showings?startDate=" + date + "&zip=94104&api_key=pjp3whej4cfqk4gv4c3fxzun").success(function(res) {
       return defer.resolve(res);
     });
     return defer.promise;

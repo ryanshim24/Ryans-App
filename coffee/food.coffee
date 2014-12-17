@@ -22,6 +22,12 @@ app.controller "FoodieCtrl", ($scope) ->
     {
       title: "Ramen"
     }
+    {
+      title: "Burrito"
+    }
+    {
+      title: "Salad"
+    }
   ]
 
 app.controller "FoodsCtrl", ($scope, $stateParams, $http, $q) ->
