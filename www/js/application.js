@@ -1,6 +1,6 @@
 var app;
 
-app = angular.module("starter", ["ionic", "LocalForageModule"]).run(function($ionicPlatform) {
+app = angular.module("starter", ["ionic", "LocalForageModule", "UserFactories"]).run(function($ionicPlatform) {
   return $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -10,7 +10,19 @@ app = angular.module("starter", ["ionic", "LocalForageModule"]).run(function($io
     }
   });
 }).config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider.state("app", {
+  $stateProvider.state("main", {
+    url: "/",
+    templateUrl: "templates/main.html",
+    controller: "UsersCtrl"
+  }).state("signup", {
+    url: "/signup",
+    templateUrl: "templates/signup.html",
+    controller: "UsersCtrl"
+  }).state("login", {
+    url: "/login",
+    templateUrl: "templates/login.html",
+    controller: "SessionsCtrl"
+  }).state("app", {
     url: "/app",
     abstract: true,
     templateUrl: "templates/menu.html",
@@ -128,10 +140,17 @@ app = angular.module("starter", ["ionic", "LocalForageModule"]).run(function($io
       }
     }
   });
-  return $urlRouterProvider.otherwise("/app/todo");
+  return $urlRouterProvider.otherwise("/");
 });
 
-app.controller("AppCtrl", function($scope, $ionicModal, $timeout) {});
+app.controller("AppCtrl", function($scope, $ionicModal, $timeout, $http, $rootScope, $state) {
+  return $scope.logout = function() {
+    console.log($rootScope);
+    return $http["delete"]("https://ryan-users.herokuapp.com/sessions/" + $rootScope.current_user.id + ".json").success(function(data) {
+      return $state.go('main');
+    });
+  };
+});
 
 app.controller("PlaylistsCtrl", function($scope) {
   $scope.test = 123;
@@ -331,8 +350,10 @@ app.controller("HangCtrl", function($scope, $ionicModal) {
   $scope.showTaskPrompt = function() {
     return $scope.modal.show();
   };
-  $scope.newGame = function(theWord, theHint) {
-    var a, _results;
+  $scope.newGame = function(theWord) {
+    var a, x, _results;
+    x = document.getElementsByClassName("removeMe")[0];
+    x.value = "";
     $scope.alph = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
     $scope.modal.hide();
     $scope.game = true;
@@ -616,3 +637,47 @@ app.controller("ToDoCtrl", function($scope, $ionicModal, $localForage) {
     return false;
   };
 });
+
+app.controller("UsersCtrl", [
+  "$scope", "$http", '$stateParams', '$state', '$location', '$rootScope', 'User', function($scope, $http, $stateParams, $state, $location, $rootScope, User) {
+    $scope.newUser = {};
+    return $scope.createUser = function() {
+      console.log($scope.newUser);
+      return User.post($scope.newUser).success(function(data) {
+        console.log(data);
+        $rootScope.current_user = data;
+        return $state.go('app.todo');
+      });
+    };
+  }
+]);
+
+app.controller("SessionsCtrl", [
+  "$scope", "$http", "$rootScope", "$location", '$state', function($scope, $http, $rootScope, $location, $state) {
+    return $scope.addSession = function(loginUser) {
+      console.log(loginUser);
+      return $http.post("https://ryan-users.herokuapp.com/login.json", {
+        user: loginUser
+      }).success(function(user) {
+        $rootScope.current_user = user;
+        return $state.go('app.todo');
+      });
+    };
+  }
+]);
+
+var UserFactories;
+
+UserFactories = angular.module("UserFactories", []);
+
+UserFactories.factory('User', [
+  '$http', function($http) {
+    return {
+      post: function(newUser) {
+        return $http.post("https://ryan-users.herokuapp.com/users.json", {
+          user: newUser
+        });
+      }
+    };
+  }
+]);

@@ -3,6 +3,7 @@ app.controller "GamesCtrl", ($scope) ->
 
 
 app.controller "HangCtrl", ($scope, $ionicModal) ->
+
   console.log $scope.theWord
 
   $ionicModal.fromTemplateUrl("hang-prompt.html",
@@ -28,7 +29,9 @@ app.controller "HangCtrl", ($scope, $ionicModal) ->
   $scope.showTaskPrompt = ->
     $scope.modal.show()
 
-  $scope.newGame = (theWord, theHint) ->
+  $scope.newGame = (theWord) ->
+    x = document.getElementsByClassName("removeMe")[0]
+    x.value = ""
     $scope.alph = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
     $scope.modal.hide()
     $scope.game = true
@@ -92,6 +95,7 @@ app.controller "HangCtrl", ($scope, $ionicModal) ->
       i++
 
   $scope.playAgain = ->
+
     console.log "here I am"
     $scope.fodal.hide()
     $scope.lodal.hide()

@@ -1,0 +1,21 @@
+<ion-view title="'Login'" hide-back-button="true">
+  <ion-content>
+    <form ng-submit="addSession(newUser)">
+      <div class="list">
+
+        <label class="item item-input">
+          <input type="text" placeholder="Username" ng-model="newUser.username">
+        </label>
+        <label class="item item-input">
+          <input type="password" placeholder="Password" ng-model="newUser.password">
+        </label>
+        <div>
+          <button class="button button-block button-positive" type="submit">Login</button>
+        </div>
+        <div style="text-align: center">
+          Or <a href="/#/signup">Create an account</a>
+        </div>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>

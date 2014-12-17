@@ -49,7 +49,7 @@
     <ion-content>
       <div class="list">
         <label class="item item-input">
-          <input type="text" placeholder="Game Word" ng-model="theWord">
+          <input type="text" placeholder="Game Word" ng-model="theWord" class = "removeMe">
         </label>
       </div>
       <div class="row">
@@ -59,23 +59,6 @@
   </ion-modal-view>
 </script>
 
-<script id="hang-prompt.html" type="text/ng-template">
-  <ion-modal-view>
-    <ion-header-bar class="bar-calm">
-      <h1 class="title">Enter a word</h1>
-    </ion-header-bar>
-    <ion-content>
-      <div class="list">
-        <label class="item item-input">
-          <input type="text" placeholder="Game Word" ng-model="theWord">
-        </label>
-      </div>
-      <div class="row">
-        <div class="col"><button ng-click="newGame(theWord)" class="button button-full icon-left ion-checkmark-circled button-balanced">Start Game</button></div>
-      </div>
-    </ion-content>
-  </ion-modal-view>
-</script>
 
 <script id="win-prompt.html" type="text/ng-template">
   <ion-modal-view>

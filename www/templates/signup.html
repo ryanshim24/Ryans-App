@@ -1,0 +1,23 @@
+<ion-view title="'Signup'">
+  <ion-content>
+    <form ng-submit="createUser(newUser)">
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" placeholder="Username" ng-model="newUser.username">
+        </label>
+        <label class="item item-input">
+          <input type="password" placeholder="Password" ng-model="newUser.password">
+        </label>
+        <label class="item item-input">
+          <input type="password" placeholder="Password Confirmation" ng-model="newUser.password_confirmation">
+        </label>
+        <div>
+          <button class="button button-block button-positive" type="submit">Create account</button>
+        </div>
+        <div style="text-align: center">
+          Or <a href="/#/login">Already have an account?</a>
+        </div>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>

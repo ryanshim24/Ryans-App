@@ -1,10 +1,26 @@
-app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatform) ->
+app = angular.module("starter", ["ionic","LocalForageModule","UserFactories"]).run(($ionicPlatform) ->
   $ionicPlatform.ready ->
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar true  if window.cordova and window.cordova.plugins.Keyboard
     StatusBar.styleDefault()  if window.StatusBar
 
 ).config(($stateProvider, $urlRouterProvider) ->
-  $stateProvider.state("app",
+
+  $stateProvider.state("main",
+    url: "/",
+    templateUrl: "templates/main.html",
+    controller: "UsersCtrl"
+
+  ).state("signup",
+    url: "/signup"
+    templateUrl: "templates/signup.html",
+    controller: "UsersCtrl"
+
+  ).state("login",
+    url: "/login"
+    templateUrl: "templates/login.html",
+    controller: "SessionsCtrl"
+
+  ).state("app",
     url: "/app"
     abstract: true
     templateUrl: "templates/menu.html"
@@ -26,8 +42,6 @@ app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatfo
       menuContent:
         templateUrl: "templates/concert.html"
         controller: "ConcertCtrl"
-
-
 
   #GAMES CONTROLLER
   ).state("app.games",
@@ -80,8 +94,6 @@ app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatfo
         templateUrl: "templates/food.html"
         controller: "FoodCtrl"
 
-
-
   ).state("app.places",
     url:"/places"
     views:
@@ -118,7 +130,7 @@ app = angular.module("starter", ["ionic","LocalForageModule"]).run(($ionicPlatfo
 
 
   # if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise "/app/todo"
+  $urlRouterProvider.otherwise "/"
 )
 
 # foursquarel ink

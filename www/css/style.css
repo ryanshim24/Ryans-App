@@ -2,6 +2,25 @@
   font-family: 'Lato', sans-serif;
 }
 
+
+.ryanBackground {
+  background: url(https://s3.amazonaws.com/uploads.hipchat.com/39979/1252803/dB2HQYo55pSKyBb/2x.png) no-repeat center top;
+  background-attachment: relative;
+  background-position: center center;
+  width: 100%;
+  opacity: .9;
+
+  -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
 .content h2{
   font-family: 'Lato', sans-serif;
 }
