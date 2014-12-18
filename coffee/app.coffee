@@ -5,6 +5,7 @@ app = angular.module("starter", ["ionic","LocalForageModule","UserFactories"]).r
 
 ).config(($stateProvider, $urlRouterProvider) ->
 
+  # Your greeted by the login Screen
   $stateProvider.state("main",
     url: "/",
     templateUrl: "templates/main.html",
@@ -20,6 +21,7 @@ app = angular.module("starter", ["ionic","LocalForageModule","UserFactories"]).r
     templateUrl: "templates/login.html",
     controller: "SessionsCtrl"
 
+  # ACTUAL APP AFTER LOGGIN IN
   ).state("app",
     url: "/app"
     abstract: true
@@ -35,13 +37,13 @@ app = angular.module("starter", ["ionic","LocalForageModule","UserFactories"]).r
         controller: "DribbleCtrl"
 
   # MUSIC CONTROLLER
-
   ).state("app.concerts",
     url: "/concerts"
     views:
       menuContent:
         templateUrl: "templates/concert.html"
         controller: "ConcertCtrl"
+
 
   #GAMES CONTROLLER
   ).state("app.games",
@@ -63,6 +65,7 @@ app = angular.module("starter", ["ionic","LocalForageModule","UserFactories"]).r
       menuContent:
         templateUrl: "templates/tictac.html"
         controller: "TicCtrl"
+
 
 
   #  TO DO LIST CONTROLLER
@@ -94,6 +97,7 @@ app = angular.module("starter", ["ionic","LocalForageModule","UserFactories"]).r
         templateUrl: "templates/food.html"
         controller: "FoodCtrl"
 
+  #PLACES CONTROLLER
   ).state("app.places",
     url:"/places"
     views:
@@ -107,7 +111,9 @@ app = angular.module("starter", ["ionic","LocalForageModule","UserFactories"]).r
         templateUrl: "templates/place.html"
         controller: "PlaceCtrl"
 
-  ).state("app.movies",
+
+  #MOVIES CONTROLLER
+  ).state "app.movies",
     url: "/movies"
     views:
       menuContent:
@@ -115,18 +121,18 @@ app = angular.module("starter", ["ionic","LocalForageModule","UserFactories"]).r
         controller: "MoviesCtrl"
 
 
-  ).state("app.playlists",
-    url: "/playlists"
-    views:
-      menuContent:
-        templateUrl: "templates/playlists.html"
-        controller: "PlaylistsCtrl"
-  ).state "app.single",
-    url: "/playlists/:playlistId"
-    views:
-      menuContent:
-        templateUrl: "templates/playlist.html"
-        controller: "PlaylistCtrl"
+  # ).state("app.playlists",
+  #   url: "/playlists"
+  #   views:
+  #     menuContent:
+  #       templateUrl: "templates/playlists.html"
+  #       controller: "PlaylistsCtrl"
+  # ).state "app.single",
+  #   url: "/playlists/:playlistId"
+  #   views:
+  #     menuContent:
+  #       templateUrl: "templates/playlist.html"
+  #       controller: "PlaylistCtrl"
 
 
   # if none of the above states are matched, use this as the fallback
