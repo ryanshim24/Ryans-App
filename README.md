@@ -13,6 +13,14 @@ Gives users access to mulitple features which include
 *Hangman Game
 *Tic-Tac-Toe
 
+#####Technology:
+* Node.js
+* Coffee Script
+* Angular.js
+* Ruby
+* Rails
+* Ionic
+
 ####How to run this app:
 As of now I'm working on making this app public by submitting it to the Apple iOS store. In the meantime you can run it through your browser or an emulator.
 
