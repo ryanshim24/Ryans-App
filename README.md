@@ -1,4 +1,4 @@
-### Ryans-App
+### Ryans-App- Personal Mobile Application
 =========
 The concept of Ryans App was built with the purpose of it being a personal mobile application that has cool features catered towards what I enjoy.
 
