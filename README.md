@@ -26,7 +26,8 @@ As of now I'm working on making this app public by submitting it to the Apple iO
 
 ######Running the app
 1. You can either run **ionic serve** to run it in the browser or...
-2. In the terminal type **cordova emulate ios** Which will run an emulator. 
+2. In the terminal type **cordova platform add ios** which will build the appropriate files.
+3. Then the terminal type **cordova emulate ios** Which will run an emulator. 
 
 
 
