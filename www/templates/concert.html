@@ -4,17 +4,17 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header">
-    <div class="list" data-ng-repeat="event in events |limitTo: 7" style="margin-bottom: 0">
+    <div class="list" data-ng-repeat="event in eventss |limitTo: 7" style="margin-bottom: 0">
 
-      <div class="item item-divider">
+      <a class="item item-divider" ng-href="{{event.uri}}">
        <h2 style="font-weight: bold;">{{event.venue.displayName}}</h2>
        <h2>{{now}} {{day}}, {{year}} | {{event.start.time|time}}</h2>
-      </div>
+      </a>
 
-      <a class="item item-icon-right" ng-href="{{artist.artist.uri}}" ng-repeat="artist in event.performance">
+      <div class="item item-icon-right" ng-href="{{artist.artist.uri}}" ng-repeat="artist in event.performance">
         <p>{{artist.displayName}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
-      </a>
+      </div>
 
     </div>
 

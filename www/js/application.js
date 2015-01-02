@@ -123,22 +123,6 @@ app = angular.module("starter", ["ionic", "LocalForageModule", "UserFactories"])
         controller: "MoviesCtrl"
       }
     }
-  }).state("app.playlists", {
-    url: "/playlists",
-    views: {
-      menuContent: {
-        templateUrl: "templates/playlists.html",
-        controller: "PlaylistsCtrl"
-      }
-    }
-  }).state("app.single", {
-    url: "/playlists/:playlistId",
-    views: {
-      menuContent: {
-        templateUrl: "templates/playlist.html",
-        controller: "PlaylistCtrl"
-      }
-    }
   });
   return $urlRouterProvider.otherwise("/");
 });
@@ -151,33 +135,6 @@ app.controller("AppCtrl", function($scope, $ionicModal, $timeout, $http, $rootSc
     });
   };
 });
-
-app.controller("PlaylistsCtrl", function($scope) {
-  $scope.test = 123;
-  return $scope.playlists = [
-    {
-      title: "Reggae",
-      id: 1
-    }, {
-      title: "Chill",
-      id: 2
-    }, {
-      title: "Dubstep",
-      id: 3
-    }, {
-      title: "Indie",
-      id: 4
-    }, {
-      title: "Rap",
-      id: 5
-    }, {
-      title: "Cowbell",
-      id: 6
-    }
-  ];
-});
-
-app.controller("PlaylistCtrl", function($scope, $stateParams) {});
 
 app.controller("DribbleCtrl", function($scope, $state, $http, $q) {
   var count;
@@ -214,7 +171,6 @@ app.filter("time", function() {
   return function(input) {
     var time;
     time = input.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-    console.log(time);
     if (time.length > 1) {
       time = time.slice(1);
       time[5] = (time[0] < 12 ? " AM" : " PM");
@@ -278,22 +234,26 @@ app.controller("FoodieCtrl", function($scope) {
 });
 
 app.controller("FoodsCtrl", function($scope, $stateParams, $http, $q) {
+  var onSuccess;
   console.log($stateParams.foodPlace);
-  $scope.init = function() {
-    return $scope.getEvents().then(function(res) {
+  onSuccess = function(position) {
+    var lat, long;
+    lat = position.coords.latitude;
+    long = position.coords.longitude;
+    return $scope.getEvents(lat, long).then(function(res) {
       $scope.places = res.response.groups[0].items;
       return console.log($scope.places);
     });
   };
-  $scope.getEvents = function() {
+  $scope.getEvents = function(lat, long) {
     var defer;
     defer = $q.defer();
-    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&near=San%20Francisco,%20CA&query=" + $stateParams.foodPlace).success(function(res) {
+    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&ll=" + lat + "," + long + "&query=" + $stateParams.foodPlace).success(function(res) {
       return defer.resolve(res);
     });
     return defer.promise;
   };
-  return $scope.init();
+  return navigator.geolocation.getCurrentPosition(onSuccess);
 });
 
 app.controller("FoodCtrl", function($scope, $stateParams, $http, $q) {
@@ -452,108 +412,90 @@ app.controller("TicCtrl", function($scope) {
 });
 
 app.controller("MoviesCtrl", function($scope, $state, $http, $q) {
-  $scope.init = function() {
-    var date;
+  var onSuccess;
+  onSuccess = function(position) {
+    var date, lat, long;
+    lat = position.coords.latitude;
+    long = position.coords.longitude;
     $scope.date = new Date();
     $scope.curr = $scope.date.getDate();
     $scope.month = $scope.date.getMonth() + 1;
-    console.log($scope.month);
     $scope.year = $scope.date.getFullYear();
     $scope.now = $scope.year + "-" + $scope.month + "-" + $scope.curr;
     date = $scope.now;
-    return $scope.getEvents(date).then(function(res) {
+    return $scope.getEvents(date, lat, long).then(function(res) {
       $scope.movies = res;
       return console.log($scope.movies);
     });
   };
-  $scope.getEvents = function(date) {
+  $scope.getEvents = function(date, lat, long) {
     var defer;
     defer = $q.defer();
-    $http.get("http://data.tmsapi.com/v1/movies/showings?startDate=" + date + "&zip=94104&api_key=pjp3whej4cfqk4gv4c3fxzun").success(function(res) {
+    $http.get("http://data.tmsapi.com/v1/movies/showings?startDate=" + date + "&lat=" + lat + "&lng=" + long + "&api_key=pjp3whej4cfqk4gv4c3fxzun").success(function(res) {
       return defer.resolve(res);
     });
     return defer.promise;
   };
-  return $scope.init();
-});
-
-app.controller("ConcertsCtrl", function($scope) {
-  return $scope.concerts = [
-    {
-      title: "San Francisco",
-      id: 1
-    }, {
-      title: "Los Angeles",
-      id: 2
-    }, {
-      title: "San Diego",
-      id: 3
-    }, {
-      title: "Portland",
-      id: 4
-    }, {
-      title: "New York",
-      id: 5
-    }, {
-      title: "Las Vegas",
-      id: 6
-    }
-  ];
+  return navigator.geolocation.getCurrentPosition(onSuccess);
 });
 
 app.controller("ConcertCtrl", function($scope, $state, $http, $q, $stateParams) {
-  var month, num;
-  num = $stateParams.concertId;
+  var month, onSuccess;
   month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   $scope.date = new Date();
   $scope.month = $scope.date.getMonth();
   $scope.day = $scope.date.getDate();
   $scope.year = $scope.date.getFullYear();
   $scope.now = month[$scope.month];
-  console.log($scope.now);
-  $scope.init = function() {
-    return $scope.getEvents().then(function(res) {
-      console.log("This is the result: ", res);
-      return $scope.events = res.resultsPage.results.event;
+  onSuccess = function(position) {
+    var lat, long;
+    lat = position.coords.latitude;
+    long = position.coords.longitude;
+    return $scope.getEvents(lat, long).then(function(res) {
+      var i;
+      $scope.events = res.resultsPage.results.event;
+      $scope.eventss = [];
+      i = 0;
+      while (i < $scope.events.length) {
+        if ($scope.events[i].venue.displayName !== "Unknown venue" && $scope.events[i].performance.length !== 0) {
+          $scope.eventss.push($scope.events[i]);
+        }
+        i++;
+      }
+      return console.log($scope.eventss);
     });
   };
-  $scope.getEvents = function() {
-    var defer, ipkey;
-    if (num = 1) {
-      ipkey = "ip:208.113.83.165";
-      defer = $q.defer();
-      $http.get("http://api.songkick.com/api/3.0/events.json?apikey=z4nSxDMJEbSNuTKt&location=" + ipkey + "&callback=JSON_CALLBACK").success(function(res) {
-        return defer.resolve(res);
-      });
-      return defer.promise;
-    } else if (num = 2) {
-      ipkey = "ip:134.201.250.155";
-      defer = $q.defer();
-      $http.get("http://api.songkick.com/api/3.0/events.json?apikey=z4nSxDMJEbSNuTKt&location=" + ipkey + "&callback=JSON_CALLBACK").success(function(res) {
-        return defer.resolve(res);
-      });
-      return defer.promise;
-    }
-  };
-  return $scope.init();
-});
-
-app.controller("PlacesCtrl", function($scope, $state, $http, $q) {
-  $scope.init = function() {
-    return $scope.getEvents().then(function(res) {
-      $scope.places = res.response.groups[0].items;
-      return console.log($scope.places);
-    });
-  };
-  $scope.getEvents = function() {
+  $scope.getEvents = function(lat, long) {
     var defer;
     defer = $q.defer();
-    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&near=San%20Francisco,%20CA&section=outdoors").success(function(res) {
+    $http.get("http://api.songkick.com/api/3.0/events.json?apikey=z4nSxDMJEbSNuTKt&location=geo:" + lat + "," + long + "&callback=JSON_CALLBACK").success(function(res) {
       return defer.resolve(res);
     });
     return defer.promise;
   };
-  return $scope.init();
+  return navigator.geolocation.getCurrentPosition(onSuccess);
+});
+
+app.controller("PlacesCtrl", function($scope, $state, $http, $q) {
+  var onSuccess;
+  onSuccess = function(position) {
+    var lat, long;
+    lat = position.coords.latitude;
+    long = position.coords.longitude;
+    return $scope.getEvents(lat, long).then(function(res) {
+      $scope.places = res.response.groups[0].items;
+      return console.log($scope.places);
+    });
+  };
+  $scope.getEvents = function(lat, long) {
+    var defer;
+    defer = $q.defer();
+    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&ll=" + lat + "," + long + "&section=outdoors").success(function(res) {
+      return defer.resolve(res);
+    });
+    return defer.promise;
+  };
+  return navigator.geolocation.getCurrentPosition(onSuccess);
 });
 
 app.controller("PlaceCtrl", function($scope, $stateParams, $http, $q) {

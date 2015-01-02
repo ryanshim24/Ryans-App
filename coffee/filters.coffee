@@ -1,7 +1,6 @@
 app.filter("time", ()->
   (input)->
     time = input.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) or [time]
-    console.log time
     if time.length >1
       time = time.slice(1)
       time[5] = (if time[0] < 12 then " AM" else " PM")
