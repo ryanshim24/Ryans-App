@@ -237,13 +237,14 @@ app.controller("FoodsCtrl", function($scope, $stateParams, $http, $q) {
   var onSuccess;
   console.log($stateParams.foodPlace);
   $scope.title = $stateParams.foodPlace;
+  $scope.load = true;
   onSuccess = function(position) {
     var lat, long;
     lat = position.coords.latitude;
     long = position.coords.longitude;
     return $scope.getEvents(lat, long).then(function(res) {
-      $scope.places = res.response.groups[0].items;
-      return console.log($scope.places);
+      $scope.load = false;
+      return $scope.places = res.response.groups[0].items;
     });
   };
   $scope.getEvents = function(lat, long) {
@@ -414,6 +415,7 @@ app.controller("TicCtrl", function($scope) {
 
 app.controller("MoviesCtrl", function($scope, $state, $http, $q) {
   var onSuccess;
+  $scope.load = true;
   onSuccess = function(position) {
     var date, lat, long;
     lat = position.coords.latitude;
@@ -425,6 +427,7 @@ app.controller("MoviesCtrl", function($scope, $state, $http, $q) {
     $scope.now = $scope.year + "-" + $scope.month + "-" + $scope.curr;
     date = $scope.now;
     return $scope.getEvents(date, lat, long).then(function(res) {
+      $scope.load = false;
       $scope.movies = res;
       return console.log($scope.movies);
     });
@@ -442,6 +445,7 @@ app.controller("MoviesCtrl", function($scope, $state, $http, $q) {
 
 app.controller("ConcertCtrl", function($scope, $state, $http, $q, $stateParams) {
   var month, onSuccess;
+  $scope.load = true;
   month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   $scope.date = new Date();
   $scope.month = $scope.date.getMonth();
@@ -463,7 +467,8 @@ app.controller("ConcertCtrl", function($scope, $state, $http, $q, $stateParams) 
         }
         i++;
       }
-      return console.log($scope.eventss);
+      console.log($scope.eventss);
+      return $scope.load = false;
     });
   };
   $scope.getEvents = function(lat, long) {
@@ -479,11 +484,13 @@ app.controller("ConcertCtrl", function($scope, $state, $http, $q, $stateParams) 
 
 app.controller("PlacesCtrl", function($scope, $state, $http, $q) {
   var onSuccess;
+  $scope.load = true;
   onSuccess = function(position) {
     var lat, long;
     lat = position.coords.latitude;
     long = position.coords.longitude;
     return $scope.getEvents(lat, long).then(function(res) {
+      $scope.load = false;
       $scope.places = res.response.groups[0].items;
       return console.log($scope.places);
     });

@@ -4,6 +4,8 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header">
+    <div class="loading" ng-show="load">
+    </div>
     <div class="list" data-ng-repeat="place in places |limitTo: 50" style="margin-bottom: 0">
 
       <div class="item item-divider">

@@ -4,7 +4,9 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header">
-    <div class="list" data-ng-repeat="event in eventss |limitTo: 7" style="margin-bottom: 0">
+    <div class="loading" ng-show="load">
+    </div>
+    <div class="list" data-ng-repeat="event in eventss |limitTo: 9" style="margin-bottom: 0">
 
       <a class="item item-divider item-icon-right" ng-href="{{event.uri}}">
        <h2 style="font-weight: bold;">{{event.venue.displayName}}</h2>

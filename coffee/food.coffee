@@ -33,13 +33,14 @@ app.controller "FoodieCtrl", ($scope) ->
 app.controller "FoodsCtrl", ($scope, $stateParams, $http, $q) ->
   console.log $stateParams.foodPlace
   $scope.title = $stateParams.foodPlace
+  $scope.load = true
   onSuccess = (position) ->
     lat = position.coords.latitude
     long = position.coords.longitude
 
     $scope.getEvents(lat, long).then (res) ->
+      $scope.load = false
       $scope.places = res.response.groups[0].items
-      console.log $scope.places
 
 
   $scope.getEvents =(lat, long) ->

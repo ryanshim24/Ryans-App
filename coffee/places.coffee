@@ -1,9 +1,11 @@
 app.controller "PlacesCtrl", ($scope, $state, $http, $q) ->
+  $scope.load = true
   onSuccess = (position) ->
     lat = position.coords.latitude
     long = position.coords.longitude
 
     $scope.getEvents(lat, long).then (res) ->
+      $scope.load = false
       $scope.places = res.response.groups[0].items
       console.log $scope.places
 

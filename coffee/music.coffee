@@ -1,6 +1,7 @@
 
 
 app.controller "ConcertCtrl", ($scope, $state, $http, $q, $stateParams) ->
+  $scope.load = true
   month = ["January","February","March","April","May","June","July","August","September","October","November","December"]
   $scope.date = new Date()
   $scope.month = $scope.date.getMonth()
@@ -20,6 +21,7 @@ app.controller "ConcertCtrl", ($scope, $state, $http, $q, $stateParams) ->
         $scope.eventss.push($scope.events[i]) if $scope.events[i].venue.displayName isnt "Unknown venue" and $scope.events[i].performance.length isnt 0
         i++
       console.log $scope.eventss
+      $scope.load = false
 
 
 

@@ -1,4 +1,5 @@
 app.controller "MoviesCtrl", ($scope, $state, $http, $q) ->
+  $scope.load = true
 
   onSuccess = (position) ->
     lat = position.coords.latitude
@@ -10,6 +11,7 @@ app.controller "MoviesCtrl", ($scope, $state, $http, $q) ->
     $scope.now = $scope.year + "-"+$scope.month+"-"+$scope.curr
     date = $scope.now
     $scope.getEvents(date, lat, long).then (res) ->
+      $scope.load = false
       $scope.movies = res
       console.log $scope.movies
 
