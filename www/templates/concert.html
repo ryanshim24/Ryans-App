@@ -6,14 +6,14 @@
   <ion-content class="has-header">
     <div class="list" data-ng-repeat="event in eventss |limitTo: 7" style="margin-bottom: 0">
 
-      <a class="item item-divider" ng-href="{{event.uri}}">
+      <a class="item item-divider item-icon-right" ng-href="{{event.uri}}">
        <h2 style="font-weight: bold;">{{event.venue.displayName}}</h2>
        <h2>{{now}} {{day}}, {{year}} | {{event.start.time|time}}</h2>
+       <i class="icon ion-chevron-right icon-accessory"></i>
       </a>
 
       <div class="item item-icon-right" ng-href="{{artist.artist.uri}}" ng-repeat="artist in event.performance">
         <p>{{artist.displayName}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
       </div>
 
     </div>

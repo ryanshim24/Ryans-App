@@ -236,6 +236,7 @@ app.controller("FoodieCtrl", function($scope) {
 app.controller("FoodsCtrl", function($scope, $stateParams, $http, $q) {
   var onSuccess;
   console.log($stateParams.foodPlace);
+  $scope.title = $stateParams.foodPlace;
   onSuccess = function(position) {
     var lat, long;
     lat = position.coords.latitude;

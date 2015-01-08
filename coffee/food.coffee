@@ -32,6 +32,7 @@ app.controller "FoodieCtrl", ($scope) ->
 
 app.controller "FoodsCtrl", ($scope, $stateParams, $http, $q) ->
   console.log $stateParams.foodPlace
+  $scope.title = $stateParams.foodPlace
   onSuccess = (position) ->
     lat = position.coords.latitude
     long = position.coords.longitude
