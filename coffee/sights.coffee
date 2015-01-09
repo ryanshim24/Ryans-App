@@ -28,9 +28,9 @@ app.controller "SightCtrl", ($scope, $stateParams, $http, $q) ->
   $scope.init = ->
     $scope.getEvents().then (res) ->
       $scope.place = res.response.venue
-      $scope.prefix = $scope.place.photos.groups[0].items[0].prefix+"width"
-      $scope.width = $scope.place.photos.groups[0].items[0].width
-      $scope.suffix = $scope.place.photos.groups[0].items[0].suffix
+      $scope.prefix = $scope.place.photos.groups[0].items[3].prefix+"width"
+      $scope.width = $scope.place.photos.groups[0].items[3].width
+      $scope.suffix = $scope.place.photos.groups[0].items[3].suffix
       $scope.pic = $scope.prefix + $scope.width + $scope.suffix
 
       console.log $scope.place
