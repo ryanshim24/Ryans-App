@@ -64,9 +64,9 @@ app.controller "FoodCtrl", ($scope, $stateParams, $http, $q) ->
   $scope.init = ->
     $scope.getEvents().then (res) ->
       $scope.place = res.response.venue
-      $scope.prefix = $scope.place.photos.groups[0].items[1].prefix+"width"
-      $scope.width = $scope.place.photos.groups[0].items[1].width
-      $scope.suffix = $scope.place.photos.groups[0].items[1].suffix
+      $scope.prefix = $scope.place.photos.groups[0].items[0].prefix+"width"
+      $scope.width = $scope.place.photos.groups[0].items[0].width
+      $scope.suffix = $scope.place.photos.groups[0].items[0].suffix
       $scope.pic = $scope.prefix + $scope.width + $scope.suffix
 
       console.log $scope.place
@@ -77,6 +77,8 @@ app.controller "FoodCtrl", ($scope, $stateParams, $http, $q) ->
       $scope.add = $scope.place.location.address
       $scope.price= $scope.place.attributes.groups[0].items[0].displayValue
       $scope.phone = $scope.place.contact.formattedPhone
+      $scope.lat = $scope.place.location.lat
+      $scope.long = $scope.place.location.lng
 
 
 

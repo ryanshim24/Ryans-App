@@ -115,6 +115,22 @@ app = angular.module("starter", ["ionic", "LocalForageModule", "UserFactories"])
         controller: "PlaceCtrl"
       }
     }
+  }).state("app.sights", {
+    url: "/sights",
+    views: {
+      menuContent: {
+        templateUrl: "templates/sights.html",
+        controller: "SightsCtrl"
+      }
+    }
+  }).state("app.sight", {
+    url: "/sights/:sightId",
+    views: {
+      menuContent: {
+        templateUrl: "templates/sight.html",
+        controller: "SightCtrl"
+      }
+    }
   }).state("app.movies", {
     url: "/movies",
     views: {
@@ -263,16 +279,18 @@ app.controller("FoodCtrl", function($scope, $stateParams, $http, $q) {
   $scope.init = function() {
     return $scope.getEvents().then(function(res) {
       $scope.place = res.response.venue;
-      $scope.prefix = $scope.place.photos.groups[0].items[1].prefix + "width";
-      $scope.width = $scope.place.photos.groups[0].items[1].width;
-      $scope.suffix = $scope.place.photos.groups[0].items[1].suffix;
+      $scope.prefix = $scope.place.photos.groups[0].items[0].prefix + "width";
+      $scope.width = $scope.place.photos.groups[0].items[0].width;
+      $scope.suffix = $scope.place.photos.groups[0].items[0].suffix;
       $scope.pic = $scope.prefix + $scope.width + $scope.suffix;
       console.log($scope.place);
       $scope.title = $scope.place.name;
       $scope.des = $scope.place.description;
       $scope.add = $scope.place.location.address;
       $scope.price = $scope.place.attributes.groups[0].items[0].displayValue;
-      return $scope.phone = $scope.place.contact.formattedPhone;
+      $scope.phone = $scope.place.contact.formattedPhone;
+      $scope.lat = $scope.place.location.lat;
+      return $scope.long = $scope.place.location.lng;
     });
   };
   $scope.getEvents = function() {
@@ -511,14 +529,68 @@ app.controller("PlaceCtrl", function($scope, $stateParams, $http, $q) {
   $scope.init = function() {
     return $scope.getEvents().then(function(res) {
       $scope.place = res.response.venue;
-      $scope.prefix = $scope.place.photos.groups[0].items[1].prefix + "width";
-      $scope.width = $scope.place.photos.groups[0].items[1].width;
-      $scope.suffix = $scope.place.photos.groups[0].items[1].suffix;
+      $scope.prefix = $scope.place.photos.groups[0].items[0].prefix + "width";
+      $scope.width = $scope.place.photos.groups[0].items[0].width;
+      $scope.suffix = $scope.place.photos.groups[0].items[0].suffix;
       $scope.pic = $scope.prefix + $scope.width + $scope.suffix;
       console.log($scope.place);
       $scope.title = $scope.place.name;
       $scope.des = $scope.place.description;
-      return $scope.add = $scope.place.location.address;
+      $scope.add = $scope.place.location.address;
+      $scope.lat = $scope.place.location.lat;
+      return $scope.long = $scope.place.location.lng;
+    });
+  };
+  $scope.getEvents = function() {
+    var defer;
+    defer = $q.defer();
+    $http.jsonp("https://api.foursquare.com/v2/venues/" + $stateParams.placeId + "?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&callback=JSON_CALLBACK").success(function(res) {
+      return defer.resolve(res);
+    });
+    return defer.promise;
+  };
+  return $scope.init();
+});
+
+app.controller("SightsCtrl", function($scope, $state, $http, $q) {
+  var onSuccess;
+  $scope.load = true;
+  onSuccess = function(position) {
+    var lat, long;
+    lat = position.coords.latitude;
+    long = position.coords.longitude;
+    return $scope.getEvents(lat, long).then(function(res) {
+      $scope.load = false;
+      $scope.places = res.response.groups[0].items;
+      return console.log($scope.places);
+    });
+  };
+  $scope.getEvents = function(lat, long) {
+    var defer;
+    defer = $q.defer();
+    $http.get("https://api.foursquare.com/v2/venues/explore?client_id=5AVYENTNQPB3RUUTJOG0WWI5IZ3H1FK32U1UUR4PLAKL3LMY&client_secret=3YTBGJ5RZC5RRPCTA4YKVWKYL5EZW2TKO0SYJ4JTMT3YWKPZ&v=20130815%20&ll=" + lat + "," + long + "&section=sights").success(function(res) {
+      return defer.resolve(res);
+    });
+    return defer.promise;
+  };
+  return navigator.geolocation.getCurrentPosition(onSuccess);
+});
+
+app.controller("SightCtrl", function($scope, $stateParams, $http, $q) {
+  console.log("here i am");
+  $scope.init = function() {
+    return $scope.getEvents().then(function(res) {
+      $scope.place = res.response.venue;
+      $scope.prefix = $scope.place.photos.groups[0].items[0].prefix + "width";
+      $scope.width = $scope.place.photos.groups[0].items[0].width;
+      $scope.suffix = $scope.place.photos.groups[0].items[0].suffix;
+      $scope.pic = $scope.prefix + $scope.width + $scope.suffix;
+      console.log($scope.place);
+      $scope.title = $scope.place.name;
+      $scope.des = $scope.place.description;
+      $scope.add = $scope.place.location.address;
+      $scope.lat = $scope.place.location.lat;
+      return $scope.long = $scope.place.location.lng;
     });
   };
   $scope.getEvents = function() {

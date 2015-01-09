@@ -112,6 +112,21 @@ app = angular.module("starter", ["ionic","LocalForageModule","UserFactories"]).r
         controller: "PlaceCtrl"
 
 
+  #SIGHTS CONTROLLER
+  ).state("app.sights",
+    url:"/sights"
+    views:
+      menuContent:
+        templateUrl: "templates/sights.html"
+        controller: "SightsCtrl"
+  ).state("app.sight",
+    url:"/sights/:sightId"
+    views:
+      menuContent:
+        templateUrl: "templates/sight.html"
+        controller: "SightCtrl"
+
+
   #MOVIES CONTROLLER
   ).state "app.movies",
     url: "/movies"
