@@ -79,6 +79,7 @@ app.controller "FoodCtrl", ($scope, $stateParams, $http, $q) ->
       $scope.phone = $scope.place.contact.formattedPhone
       $scope.lat = $scope.place.location.lat
       $scope.long = $scope.place.location.lng
+      $scope.address = $scope.place.location.address + ", " + $scope.place.location.city + " " +$scope.place.location.state
 
 
 

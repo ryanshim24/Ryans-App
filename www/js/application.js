@@ -290,7 +290,8 @@ app.controller("FoodCtrl", function($scope, $stateParams, $http, $q) {
       $scope.price = $scope.place.attributes.groups[0].items[0].displayValue;
       $scope.phone = $scope.place.contact.formattedPhone;
       $scope.lat = $scope.place.location.lat;
-      return $scope.long = $scope.place.location.lng;
+      $scope.long = $scope.place.location.lng;
+      return $scope.address = $scope.place.location.address + ", " + $scope.place.location.city + " " + $scope.place.location.state;
     });
   };
   $scope.getEvents = function() {
@@ -538,7 +539,8 @@ app.controller("PlaceCtrl", function($scope, $stateParams, $http, $q) {
       $scope.des = $scope.place.description;
       $scope.add = $scope.place.location.address;
       $scope.lat = $scope.place.location.lat;
-      return $scope.long = $scope.place.location.lng;
+      $scope.long = $scope.place.location.lng;
+      return $scope.address = $scope.place.location.address + ", " + $scope.place.location.city + " " + $scope.place.location.state;
     });
   };
   $scope.getEvents = function() {
@@ -590,7 +592,8 @@ app.controller("SightCtrl", function($scope, $stateParams, $http, $q) {
       $scope.des = $scope.place.description;
       $scope.add = $scope.place.location.address;
       $scope.lat = $scope.place.location.lat;
-      return $scope.long = $scope.place.location.lng;
+      $scope.long = $scope.place.location.lng;
+      return $scope.address = $scope.place.location.address + ", " + $scope.place.location.city + " " + $scope.place.location.state;
     });
   };
   $scope.getEvents = function() {

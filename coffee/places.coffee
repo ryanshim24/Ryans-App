@@ -41,7 +41,7 @@ app.controller "PlaceCtrl", ($scope, $stateParams, $http, $q) ->
       $scope.add = $scope.place.location.address
       $scope.lat = $scope.place.location.lat
       $scope.long = $scope.place.location.lng
-
+      $scope.address = $scope.place.location.address + ", " + $scope.place.location.city + " " +$scope.place.location.state
 
 
   $scope.getEvents = ->
